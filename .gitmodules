@@ -1,0 +1,6 @@
+[submodule "factorio-recipes-json"]
+	path = factorio-recipes-json
+	url = https://github.com/kevinta893/factorio-recipes-json
+[submodule "vlibs2"]
+	path = vlibs2
+	url = https://github.com/elapidae/vlibs2.git
