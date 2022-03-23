@@ -170,6 +170,52 @@ std::vector<QPoint> square_of(const QString& name, const QPoint& pos)
     throw verror << "unknown entity: " << name;
 }
 //=======================================================================================
+//  Если направление диагональное, то direction = 1,3,5,7, результат -- крестик;
+//  положение крестика относительно координат описывается смещением.
+//
+//  Если нет, то координата в правом верхнем углу.
+std::vector<QPoint> square_of_straight_rail(const QJsonObject& obj, QPoint pos)
+{
+    auto x = pos.x();
+    auto y = pos.y();
+    //  Координаты всегда нечетные.
+    if (x % 2 == 0 || y % 2 == 0) throw verror("not odd xy: ", x, ",", y);
+
+    //  четное направление
+    auto dir = obj["direction"].toInt(0);
+    if (dir % 2 == 0)
+        return {
+            {x,   y},
+            {x,   y-1},
+            {x-1, y},
+            {x-1, y-1}
+        };
+
+    //  нечетные направления, результат крестик, координаты сводятся в центр.
+    if (dir == 5 || dir == 7) --x;
+    if (dir == 1 || dir == 7) --y;
+
+    return {
+        {x,   y},
+        {x,   y-1},
+        {x,   y+1},
+        {x-1, y},
+        {x+1, y}
+    };
+}
+//=======================================================================================
+std::vector<QPoint> square_of(const QJsonObject& obj)
+{
+    auto pos_o = obj[position_n].toObject();
+    QPoint pos( pos_o["x"].toDouble(), pos_o["y"].toDouble() );
+    auto name = obj[name_n].toString();
+
+    if (name == straight_rail_n)
+        return square_of_straight_rail(obj, pos);
+
+    return square_of(name, pos);
+}
+//=======================================================================================
 void process_entity(QJsonArray *tiles, const QJsonObject& ent)
 {
     auto pos_o = ent[position_n].toObject();
