@@ -16,11 +16,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    blue.cpp \
+    blueprint.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    parse_lua_recipe.cpp
 
 HEADERS += \
-    mainwindow.h
+    blue.h \
+    blueprint.h \
+    mainwindow.h \
+    parse_lua_recipe.h
 
 FORMS += \
     mainwindow.ui
