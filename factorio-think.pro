@@ -16,17 +16,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    blue.cpp \
+  #  blue.cpp \
     blueprint.cpp \
+    blueprint_io.cpp \
     main.cpp \
     mainwindow.cpp \
-    parse_lua_recipe.cpp
+    make_books.cpp \
+    parse_lua_recipe.cpp \
+    templates.cpp
 
 HEADERS += \
-    blue.h \
+  #  blue.h \
     blueprint.h \
+    blueprint_io.h \
     mainwindow.h \
-    parse_lua_recipe.h
+    make_books.h \
+    parse_lua_recipe.h \
+    templates.h
 
 FORMS += \
     mainwindow.ui
@@ -38,3 +44,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 VLIBS_DIR = $$PWD/vlibs2
 include( $$VLIBS_DIR/vlog/vlog.pri )
+include( $$VLIBS_DIR/vbyte_buffer/vbyte_buffer.pri )
