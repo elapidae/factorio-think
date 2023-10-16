@@ -11,7 +11,8 @@
 
 #include "parse_lua_recipe.h"
 #include "vcat.h"
-#include "blueprint.h"
+#include "bprint_landfill.h"
+#include "blueprint_io.h"
 
 #include "make_books.h"
 
@@ -40,15 +41,15 @@ int main( int argc, char** argv )
         QJsonObject jo;
         try
         {
-            jo = BluePrint::extract( text );
+            jo = BluePrint_IO::extract( text );
         }
         catch ( const impl_vlog::error& e )
         {
             vdeb << "not extracted";
             return;
         }
-        auto r = BluePrint::correct_blueprint_landfill( jo );
-        auto res = BluePrint::pack( r );
+        auto r = BPrint_Landfill::correct_blueprint_landfill( jo );
+        auto res = BluePrint_IO::pack( r );
 
         my_change = true;
         app.clipboard()->setText( res );

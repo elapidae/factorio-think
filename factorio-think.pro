@@ -17,7 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
   #  blue.cpp \
-    blueprint.cpp \
+    bprint_landfill.cpp \
     blueprint_io.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -27,7 +27,7 @@ SOURCES += \
 
 HEADERS += \
   #  blue.h \
-    blueprint.h \
+    bprint_landfill.h \
     blueprint_io.h \
     mainwindow.h \
     make_books.h \

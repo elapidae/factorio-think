@@ -1,4 +1,4 @@
-#include "blueprint.h"
+#include "bprint_landfill.h"
 
 #include <QProcess>
 #include <QPoint>
@@ -7,105 +7,15 @@
 #include <QFile>
 
 
-
-//=======================================================================================
-QJsonObject BluePrint::extract(QByteArray code)
-{
-    QByteArray arr( code );
-
-    while ( true )
-    {
-        if ( arr.at(0) == '\n' ) { arr.remove(0,1); continue; }
-        if ( arr.at(0) == '\r' ) { arr.remove(0,1); continue; }
-        if ( arr.at(0) == ' '  ) { arr.remove(0,1); continue; }
-        break;
-    }
-
-    if ( arr.at(0) != '0' ) throw verror;
-    arr.remove(0,1);
-
-    if ( !arr.fromBase64Encoding(arr) ) throw verror;
-
-    QProcess proc;
-    QObject::connect( &proc, &QProcess::stateChanged,
-    [](QProcess::ProcessState)
-    {
-        //vdeb << state;
-    });
-
-    QObject::connect( &proc, &QProcess::errorOccurred,
-    [&](QProcess::ProcessError error)
-    {
-        vdeb << "err" << error;
-        throw verror;
-    });
-    QByteArray doc;
-    QObject::connect( &proc, &QProcess::readyReadStandardOutput,
-    [&]
-    {
-        doc += proc.readAllStandardOutput();
-    });
-    QString cmd = "echo \"" + arr + "\"|base64 -d|zlib-flate -uncompress";
-    //vdeb << cmd;
-    proc.start( "bash", QStringList{"-c",cmd} );
-    proc.waitForFinished();
-    //vdeb << doc;
-
-    QJsonParseError error { 0, QJsonParseError::NoError };
-    auto json = QJsonDocument::fromJson( doc, &error );
-    if ( error.error != QJsonParseError::NoError ) throw verror << error.errorString();
-
-    return json.object();
-}
-//=======================================================================================
-//  Add '0' to begin.
-QByteArray BluePrint::pack(QJsonObject obj)
-{
-    QProcess proc;
-    QObject::connect( &proc, &QProcess::stateChanged,
-    [](QProcess::ProcessState)
-    {
-        //vdeb << state;
-    });
-
-    QObject::connect( &proc, &QProcess::errorOccurred,
-    [&](QProcess::ProcessError error)
-    {
-        throw verror << "err: " << error;
-    });
-    QByteArray res = "0";
-    QObject::connect( &proc, &QProcess::readyReadStandardOutput,
-    [&]
-    {
-        res += proc.readAllStandardOutput();
-    });
-
-    auto arr = QJsonDocument(obj).toJson(QJsonDocument::Compact);
-
-    vdeb << "Size of res json arr: " << arr.size();
-
-    auto json_fname = "json.tmp";
-    {
-        QFile f(json_fname);
-        if (!f.open(QIODevice::WriteOnly)) throw verror;
-        f.write(arr);
-    }
-    auto cmd = QString("cat ") + json_fname + "|zlib-flate -compress=9|base64 --wrap=0";
-
-    proc.start( "bash", QStringList{"-c",cmd} );
-    proc.waitForFinished();
-
-    return res;
-}
 //=======================================================================================
 static auto constexpr blueprint_n = "blueprint";
-QJsonObject BluePrint::correct_blueprint_landfill( QJsonObject src )
+QJsonObject BPrint_Landfill::correct_blueprint_landfill( QJsonObject src )
 {
     auto _bp_o = src[blueprint_n];
     if (!_bp_o.isObject()) throw verror;
     auto o = _bp_o.toObject();
 
-    auto corrected = BluePrint::correct_landfill(o);
+    auto corrected = BPrint_Landfill::correct_landfill(o);
 
     QJsonObject res_obj;
     res_obj[blueprint_n] = corrected;
@@ -482,7 +392,7 @@ void process_entity(QPointSet *points, const QJsonObject& obj)
     }
 }
 //=======================================================================================
-QJsonObject BluePrint::correct_landfill(QJsonObject src)
+QJsonObject BPrint_Landfill::correct_landfill(QJsonObject src)
 {
     if (!src.keys().contains(entities_n)) throw verror;
     if (!src[entities_n].isArray()) throw verror;

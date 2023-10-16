@@ -5,7 +5,8 @@
 #include <QDebug>
 #include <QFile>
 
-#include "blueprint.h"
+#include "bprint_landfill.h"
+#include "blueprint_io.h"
 #include "vlog.h"
 #include "vbyte_buffer.h"
 #include "vbyte_buffer_view.h"
@@ -279,7 +280,7 @@ QJsonObject process_one_entity( QJsonObject entity, Entity src, Entity dst )
 //---------------------------------------------------------------------------------------
 static void add_landfill( QJsonObject *bp_ptr )
 {
-    *bp_ptr = BluePrint::correct_landfill( *bp_ptr );
+    *bp_ptr = BPrint_Landfill::correct_landfill( *bp_ptr );
 }
 //---------------------------------------------------------------------------------------
 static void correct_schedules( QJsonObject *bp_ptr, Entity src, Entity dst )
@@ -413,7 +414,7 @@ static void copy_to_clipboard( QByteArray arr )
 //=======================================================================================
 static QJsonObject extract_blueprint( QByteArray src )
 {
-    auto _obj = BluePrint::extract( src );
+    auto _obj = BluePrint_IO::extract( src );
     auto obj = _obj["blueprint"];
     if ( !obj.isObject() ) throw verror;
     return obj.toObject();
@@ -447,7 +448,7 @@ static void make_fluid()
 
     QJsonObject res_obj;
     res_obj["blueprint_book"] = book;
-    auto arr = BluePrint::pack( res_obj );
+    auto arr = BluePrint_IO::pack( res_obj );
     copy_to_clipboard( arr );
     vdeb << "Done";
     return;
@@ -510,7 +511,7 @@ static void make_mining()
 
     QJsonObject res_obj;
     res_obj["blueprint_book"] = book;
-    auto arr = BluePrint::pack( res_obj );
+    auto arr = BluePrint_IO::pack( res_obj );
     copy_to_clipboard( arr );
     //vdeb << arr;
     vdeb << "Done";
@@ -593,7 +594,7 @@ static void make_product1()
 
     QJsonObject res_obj;
     res_obj["blueprint_book"] = book;
-    auto arr = BluePrint::pack( res_obj );
+    auto arr = BluePrint_IO::pack( res_obj );
     copy_to_clipboard( arr );
     vdeb << arr;
     vdeb << "Done";

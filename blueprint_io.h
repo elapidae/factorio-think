@@ -1,11 +1,13 @@
-#ifndef BLUEPRINT_IO_H
-#define BLUEPRINT_IO_H
+#pragma once
+
+#include <QJsonObject>
 
 
 class BluePrint_IO
 {
 public:
-    BluePrint_IO();
-};
+    // Can throw verror.
+    static QJsonObject extract( QByteArray code );
 
-#endif // BLUEPRINT_IO_H
+    static QByteArray  pack( QJsonObject obj );
+};
