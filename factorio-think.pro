@@ -16,22 +16,52 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-  #  blue.cpp \
+    blueprint.cpp \
+    blueprint_book.cpp \
     bprint_landfill.cpp \
     blueprint_io.cpp \
+    clipboard.cpp \
+    items/arithmetic_combinator.cpp \
+    items/constant_combinator.cpp \
+    item.cpp \
+    items/decider_combinator.cpp \
+    items/icons.cpp \
+    items/inserter.cpp \
+    items/trains.cpp \
+    json.cpp \
     main.cpp \
     mainwindow.cpp \
     make_books.cpp \
     parse_lua_recipe.cpp \
+    preparations/pr_trains_v2.cpp \
+    preparations/pr_uran.cpp \
+    prototypes.cpp \
+    recipe.cpp \
     templates.cpp
 
 HEADERS += \
-  #  blue.h \
+    blueprint.h \
+    blueprint_book.h \
     bprint_landfill.h \
     blueprint_io.h \
+    clipboard.h \
+    items/arithmetic_combinator.h \
+    items/constant_combinator.h \
+    item.h \
+    items/decider_combinator.h \
+    items/icons.h \
+    items/inserter.h \
+    items/trains.h \
+    json.h \
     mainwindow.h \
     make_books.h \
+    names.h \
     parse_lua_recipe.h \
+    preparations/pr_trains_v2.h \
+    preparations/pr_uran.h \
+    prototypes.h \
+    recipe.h \
+    qdeb.h \
     templates.h
 
 FORMS += \

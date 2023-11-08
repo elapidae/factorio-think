@@ -1,7 +1,7 @@
-#ifndef MAKE_BOOKS_H
-#define MAKE_BOOKS_H
+#pragma once
 
+#include <QByteArray>
 
 void make_books();
 
-#endif // MAKE_BOOKS_H
+const char * product_iron1();

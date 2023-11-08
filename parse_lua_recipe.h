@@ -5,10 +5,10 @@
 
 //=======================================================================================
 
-struct Recipe
+struct Recipe_
 {
-    using List = QList<Recipe>;
-    using Map  = QMap<QString,Recipe>;
+    using List = QList<Recipe_>;
+    using Map  = QMap<QString,Recipe_>;
 
     QString name;
     int count = 0;
@@ -40,7 +40,7 @@ class parse_lua_recipe
 public:
     static QJsonArray recipe();
 
-    static Recipe::List interpret();
+    static Recipe_::List interpret();
 };
 
 //=======================================================================================

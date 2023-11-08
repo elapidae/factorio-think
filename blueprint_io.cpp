@@ -4,23 +4,24 @@
 #include <QFile>
 #include <QJsonParseError>
 #include "vlog.h"
-
+#include "vtime_meter.h"
 
 //=======================================================================================
-QJsonObject BluePrint_IO::extract( QByteArray code )
+QJsonObject BluePrint_IO::extract( QByteArray _code )
 {
-    QByteArray arr( code );
-
-    while ( true )
+    vtime_meter tm;
+    QString str = _code;
+    QByteArray arr;
+    for ( auto ch: str )
     {
-        if ( arr.at(0) == '\n' ) { arr.remove(0,1); continue; }
-        if ( arr.at(0) == '\r' ) { arr.remove(0,1); continue; }
-        if ( arr.at(0) == ' '  ) { arr.remove(0,1); continue; }
-        break;
+        if ( ch.isSpace() ) continue;
+        arr.push_back( ch.toLatin1() );
     }
 
     if ( arr.at(0) != '0' ) throw verror;
     arr.remove(0,1);
+    vdeb << "BluePrint_IO::extract cleared byte array (size" << arr.size() << ") by"
+         << tm.elapsed().ms();
 
     if ( !arr.fromBase64Encoding(arr) ) throw verror;
 

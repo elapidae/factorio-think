@@ -422,11 +422,11 @@ static bool skip_recipe(QString name)
 }
 //=======================================================================================
 
-Recipe::List parse_lua_recipe::interpret()
+Recipe_::List parse_lua_recipe::interpret()
 {
     auto arr = recipe();
 
-    Recipe::List res;
+    Recipe_::List res;
 
     for ( auto item: arr )
     {
@@ -440,7 +440,7 @@ Recipe::List parse_lua_recipe::interpret()
             obj["result"]      = norm["result"];
         }
 
-        Recipe cur;
+        Recipe_ cur;
         cur.name = extract(obj, "name").toString();
         if ( skip_recipe(cur.name) ) continue;
 
@@ -484,7 +484,7 @@ Recipe::List parse_lua_recipe::interpret()
             }
             auto l = in.toArray(); if (l.size() != 2) throw verror;
 
-            Recipe i;
+            Recipe_ i;
             i.name = l.at(0).toString();
             i.count = l.at(1).toInt();
             cur.ingredients.insert( i.name, i );

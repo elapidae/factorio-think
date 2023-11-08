@@ -10,133 +10,51 @@
 #include "vlog.h"
 #include "vbyte_buffer.h"
 #include "vbyte_buffer_view.h"
+#include "item.h"
+#include "clipboard.h"
 
 #define qdeb qDebug() << QByteArray::fromStdString(V_POSITION_FIX.place())
-static void copy_to_clipboard( QByteArray arr );
+void copy_to_clipboard( QByteArray arr );
 
-struct Entity
-{
-    QString label() const { return "[" + type + "=" + name + "]"; }
-
-    QJsonObject item_object() const
-    {
-        QJsonObject res;
-        res["name"] = name;
-        res["type"] = type;
-        return res;
-    }
-
-    static Entity coal()          { return item_50("coal");           }
-    static Entity stone()         { return item_50("stone");          }
-    static Entity iron_ore()      { return item_50("iron-ore");       }
-    static Entity copper_ore()    { return item_50("copper-ore");     }
-    static Entity uranium_ore()   { return item_50("uranium-ore");    }
-
-    static Entity iron_plate()    { return item_100("iron-plate");    }
-    static Entity copper_plate()  { return item_100("copper-plate");  }
-    static Entity steel_plate()   { return item_100("steel-plate");   }
-
-    static Entity plastic_bar()         { return item_100("plastic-bar");           }
-    static Entity electronic_circuit()  { return item(200, "electronic-circuit");   }
-
-
-    static Entity train_stop()    { return item(-1, "train-stop");    }
-
-    static Entity water()           { return fluid("water");            }
-    static Entity crude_oil()       { return fluid("crude-oil");        }
-    static Entity steam()           { return fluid("steam");            }
-    static Entity heavy_oil()       { return fluid("heavy-oil");        }
-    static Entity light_oil()       { return fluid("light-oil");        }
-    static Entity petroleum_gas()   { return fluid("petroleum-gas");    }
-    static Entity sulfuric_acid()   { return fluid("sulfuric-acid");    }
-    static Entity lubricant()       { return fluid("lubricant");        }
-
-    static Entity virtual_signal( QString name )
-    {
-        return { -1, "virtual", "signal-" + name };
-    }
-
-    int optimum_station_count() const
-    {
-        if ( type == "fluid" ) return 20000;
-        if ( stack_size <= 0 ) throw verror;
-
-        auto cells_in_chest = 16;
-        auto chests_count = 12;
-        return stack_size * chests_count * cells_in_chest / 2;
-    }
-
-    //QString type() const { return type; }
-    //QString name() const { return name; }
-
-private:
-    int     stack_size = 50;
-    QString type       = "item";
-    QString name       = "coal";
-
-    Entity( int s, QString t, QString n )
-        : stack_size( s )
-        , type( t )
-        , name( n )
-    {}
-
-private:
-    static Entity item_50( QString name )
-    {
-        return item( 50, name );
-    }
-    static Entity item_100( QString name )
-    {
-        return item( 100, name );
-    }
-    static Entity item( int stack_size, QString name )
-    {
-        return { stack_size, "item", name };
-    }
-    static Entity fluid( QString name )
-    {
-        return { 25000, "fluid", name };
-    }
-};
 //=======================================================================================
 static auto mining_entities = []
 {
-    QList<Entity> res;
-    res.append( Entity::coal()        );
-    res.append( Entity::stone()       );
-    res.append( Entity::iron_ore()    );
-    res.append( Entity::copper_ore()  );
-    res.append( Entity::uranium_ore() );
+    QList<Item> res;
+    //res.append( Item::Named::coal() );
+    res.append( Item::stone()       );
+    res.append( Item::iron_ore()    );
+    res.append( Item::copper_ore()  );
+    res.append( Item::uranium_ore() );
 
     return res;
 }();
 //=======================================================================================
 static auto second_entities = []
 {
-    QList<Entity> res;
+    QList<Item> res;
 
-    res.append( Entity::iron_plate()  );
-    res.append( Entity::copper_plate());
-    res.append( Entity::steel_plate() );
+    res.append( Item::iron_plate()  );
+    res.append( Item::copper_plate());
+    res.append( Item::steel_plate() );
 
-    res.append( Entity::plastic_bar() );
-    res.append( Entity::electronic_circuit() );
+    res.append( Item::plastic_bar() );
+    res.append( Item::electronic_circuit() );
 
     return res;
 }();
 //---------------------------------------------------------------------------------------
 static auto fluid_entities = []
 {
-    QList<Entity> res;
-    res.append( Entity::water()         );
-    res.append( Entity::crude_oil()     );
-    res.append( Entity::steam()         );
-    res.append( Entity::heavy_oil()     );
-    res.append( Entity::light_oil()     );
+    QList<Item> res;
+    res.append( Item::water()         );
+    res.append( Item::crude_oil()     );
+    res.append( Item::steam()         );
+    res.append( Item::heavy_oil()     );
+    res.append( Item::light_oil()     );
 
-    res.append( Entity::petroleum_gas() );
-    res.append( Entity::sulfuric_acid() );
-    res.append( Entity::lubricant()     );
+    res.append( Item::petroleum_gas() );
+    res.append( Item::sulfuric_acid() );
+    res.append( Item::lubricant()     );
 
     return res;
 }();
@@ -210,7 +128,7 @@ void check_version( quint64 ver )
 // entities: array
 // icons:    array
 //---------------------------------------------------------------------------------------
-QJsonObject process_one_entity( QJsonObject entity, Entity src, Entity dst )
+QJsonObject process_one_entity( QJsonObject entity, Item src, Item dst )
 {
     auto name = entity["name"].toString();
 
@@ -228,8 +146,8 @@ QJsonObject process_one_entity( QJsonObject entity, Entity src, Entity dst )
         {
             auto item = src_filters.takeAt(0).toObject();
             auto sig = item["signal"].toObject();
-            if ( sig == src.item_object() )
-                sig = dst.item_object();
+            if ( sig == src.item_name_obj() )
+                sig = dst.item_name_obj();
             item["signal"] = sig;
             filters.append( item );
         }
@@ -251,8 +169,8 @@ QJsonObject process_one_entity( QJsonObject entity, Entity src, Entity dst )
 
                 { // first_signal
                     auto signal = conditions["first_signal"].toObject();
-                    if ( signal == src.item_object() )
-                        conditions["first_signal"] = dst.item_object();
+                    if ( signal == src.item_name_obj() )
+                        conditions["first_signal"] = dst.item_name_obj();
                 } // first_signal
 
                 control_behavior[n_decider_conditions] = conditions;
@@ -274,7 +192,7 @@ QJsonObject process_one_entity( QJsonObject entity, Entity src, Entity dst )
     } // if ( name == "train-stop" )
 
     qdeb << entity;
-    copy_to_clipboard( QJsonDocument(entity).toJson() );
+    clipboard::put( QJsonDocument(entity).toJson() );
     throw verror;
 }
 //---------------------------------------------------------------------------------------
@@ -283,7 +201,7 @@ static void add_landfill( QJsonObject *bp_ptr )
     *bp_ptr = BPrint_Landfill::correct_landfill( *bp_ptr );
 }
 //---------------------------------------------------------------------------------------
-static void correct_schedules( QJsonObject *bp_ptr, Entity src, Entity dst )
+static void correct_schedules( QJsonObject *bp_ptr, Item src, Item dst )
 {
     auto &bp = *bp_ptr;
     if ( !bp.contains("schedules") ) return;
@@ -311,7 +229,7 @@ static void correct_schedules( QJsonObject *bp_ptr, Entity src, Entity dst )
     bp["schedules"] = schedules;
 }
 //---------------------------------------------------------------------------------------
-QJsonObject change_blueprint( QJsonObject blueprint, Entity src, Entity dst )
+QJsonObject change_blueprint( QJsonObject blueprint, Item src, Item dst )
 {
     correct_schedules( &blueprint, src, dst );
     check_version( blueprint[n_version].toDouble() );
@@ -328,9 +246,9 @@ QJsonObject change_blueprint( QJsonObject blueprint, Entity src, Entity dst )
     {
         auto icon = src_icons.takeAt(0).toObject();
         auto sig = icon[n_signal].toObject();
-        if ( sig == src.item_object() )
+        if ( sig == src.item_name_obj() )
         {
-            icon[n_signal] = dst.item_object();
+            icon[n_signal] = dst.item_name_obj();
         }
         icons.append( icon );
     }
@@ -371,11 +289,11 @@ static QJsonObject make_train_book()
     QJsonObject obj;
 
     obj["index"] = 1;
-    obj["signal"] = Entity::train_stop().item_object();
+    obj["signal"] = Item::train_stop().item_name_obj();
     icons.append( obj );
 
     obj["index"] = 2;
-    obj["signal"] = Entity::virtual_signal("1").item_object();
+    obj["signal"] = Item::virtual_signal("1").item_name_obj();
     icons.append( obj );
 
     res["icons"] = icons;
@@ -384,32 +302,23 @@ static QJsonObject make_train_book()
 //=======================================================================================
 static QJsonObject make_fluid_book()
 {
+    (void)make_train_book;
+
     auto res = make_book( "Trains", "Auto generated train stops." );
     QJsonArray icons;
 
     QJsonObject obj;
 
     obj["index"] = 1;
-    obj["signal"] = Entity::train_stop().item_object();
+    obj["signal"] = Item::train_stop().item_name_obj();
     icons.append( obj );
 
     obj["index"] = 2;
-    obj["signal"] = Entity::water().item_object();
+    obj["signal"] = Item::water().item_name_obj();
     icons.append( obj );
 
     res["icons"] = icons;
     return res;
-}
-//=======================================================================================
-static void copy_to_clipboard( QByteArray arr )
-{
-    {
-        QFile f("clipboard.txt");
-        if ( !f.open(QIODevice::WriteOnly) ) throw verror;
-        f.write( arr );
-    }
-    system("cat clipboard.txt | xclip -selection clipboard");
-    return;
 }
 //=======================================================================================
 static QJsonObject extract_blueprint( QByteArray src )
@@ -436,10 +345,10 @@ static void make_fluid()
     {
         QJsonObject obj;
         obj["index"] = idx;
-        obj["blueprint"] = change_blueprint( water_r1, Entity::water(), dst );
+        obj["blueprint"] = change_blueprint( water_r1, Item::water(), dst );
         blueprints.append( obj );
         obj["index"] = idx + 1;
-        obj["blueprint"] = change_blueprint( water_s1, Entity::water(), dst );
+        obj["blueprint"] = change_blueprint( water_s1, Item::water(), dst );
         blueprints.append( obj );
         idx += 6;
     }
@@ -449,7 +358,7 @@ static void make_fluid()
     QJsonObject res_obj;
     res_obj["blueprint_book"] = book;
     auto arr = BluePrint_IO::pack( res_obj );
-    copy_to_clipboard( arr );
+    clipboard::put( arr );
     vdeb << "Done";
     return;
 }
@@ -462,11 +371,11 @@ static QJsonObject make_mining1_book()
     QJsonObject obj;
 
     obj["index"] = 1;
-    obj["signal"] = Entity::train_stop().item_object();
+    obj["signal"] = Item::train_stop().item_name_obj();
     icons.append( obj );
 
     obj["index"] = 2;
-    obj["signal"] = Entity::virtual_signal("M").item_object();
+    obj["signal"] = Item::virtual_signal("M").item_name_obj();
     icons.append( obj );
 
     res["icons"] = icons;
@@ -493,16 +402,16 @@ static void make_mining()
     {
         QJsonObject obj;
         obj["index"] = idx + 0;
-        obj["blueprint"] = change_blueprint( m1, Entity::coal(), dst );
+        obj["blueprint"] = change_blueprint( m1, Item::Named::coal(), dst );
         blueprints.append( obj );
         obj["index"] = idx + 1;
-        obj["blueprint"] = change_blueprint( w1, Entity::coal(), dst );
+        obj["blueprint"] = change_blueprint( w1, Item::Named::coal(), dst );
         blueprints.append( obj );
         obj["index"] = idx + 2;
-        obj["blueprint"] = change_blueprint( s1, Entity::coal(), dst );
+        obj["blueprint"] = change_blueprint( s1, Item::Named::coal(), dst );
         blueprints.append( obj );
         obj["index"] = idx + 3;
-        obj["blueprint"] = change_blueprint( r1, Entity::coal(), dst );
+        obj["blueprint"] = change_blueprint( r1, Item::Named::coal(), dst );
         blueprints.append( obj );
         idx += 6;
     }
@@ -512,14 +421,14 @@ static void make_mining()
     QJsonObject res_obj;
     res_obj["blueprint_book"] = book;
     auto arr = BluePrint_IO::pack( res_obj );
-    copy_to_clipboard( arr );
+    clipboard::put( arr );
     //vdeb << arr;
     vdeb << "Done";
     return;
 }
 
 //=======================================================================================
-void replace_train_stops( QJsonArray* entities, Entity src, Entity dst )
+void replace_train_stops( QJsonArray* entities, Item src, Item dst )
 {
     for ( int i = 0; i < entities->count(); ++i )
     {
@@ -541,26 +450,26 @@ static QJsonObject make_product1_book()
     QJsonObject obj;
 
     obj["index"] = 1;
-    obj["signal"] = Entity::train_stop().item_object();
+    obj["signal"] = Item::train_stop().item_name_obj();
     icons.append( obj );
 
     obj["index"] = 2;
-    obj["signal"] = Entity::virtual_signal("P").item_object();
+    obj["signal"] = Item::virtual_signal("P").item_name_obj();
     icons.append( obj );
 
     obj["index"] = 3;
-    obj["signal"] = Entity::coal().item_object();
+    obj["signal"] = Item::Named::coal().item_name_obj();
     icons.append( obj );
 
     obj["index"] = 4;
-    obj["signal"] = Entity::virtual_signal("1").item_object();
+    obj["signal"] = Item::virtual_signal("1").item_name_obj();
     icons.append( obj );
 
     res["icons"] = icons;
     return res;
 }
 //=======================================================================================
-static const char * product_iron1();
+const char * product_iron1();
 static void make_product1()
 {
     auto book = make_product1_book();
@@ -577,15 +486,15 @@ static void make_product1()
     idx += 1;
     //-----------------------------------------------------------------------------------
     obj["index"] = idx;
-    auto p2 = change_blueprint( p1, Entity::iron_ore(), Entity::copper_ore() );
-    p2 = change_blueprint( p2, Entity::iron_plate(), Entity::copper_plate() );
+    auto p2 = change_blueprint( p1, Item::iron_ore(), Item::copper_ore() );
+    p2 = change_blueprint( p2, Item::iron_plate(), Item::copper_plate() );
     obj["blueprint"] = p2;
     blueprints.append( obj );
     idx += 1;
     //-----------------------------------------------------------------------------------
     obj["index"] = idx;
-    p1 = change_blueprint( p1, Entity::iron_plate(), Entity::steel_plate() );
-    p1 = change_blueprint( p1, Entity::iron_ore(),   Entity::iron_plate() );
+    p1 = change_blueprint( p1, Item::iron_plate(), Item::steel_plate() );
+    p1 = change_blueprint( p1, Item::iron_ore(),   Item::iron_plate() );
     obj["blueprint"] = p1;
     blueprints.append( obj );
 //    idx += 1;
@@ -595,7 +504,7 @@ static void make_product1()
     QJsonObject res_obj;
     res_obj["blueprint_book"] = book;
     auto arr = BluePrint_IO::pack( res_obj );
-    copy_to_clipboard( arr );
+    clipboard::put( arr );
     vdeb << arr;
     vdeb << "Done";
     return;
@@ -643,6 +552,7 @@ R"(0eNrtW9tyozgQ/ReezRYSEkKunf2IrX2bSlEYK4lqMXi5ZCeV8r+vAMcXLNndIlPzsi9JbOB060h9
 //=======================================================================================
 static const char * water_R1()
 {
+    (void)coal_R_quick4;
 return
 R"(0eNrtWVuPozYY/S9+hhHY5hK02x9R9W01QoQ4GWu51Zi00Sj/vTZOuCR2YphUK1Wdh4kg+NjfxeecmE+wLTrSMFpxkHwCmtdVC5Ifn6Clhyor5D1+aghIAOWkBA6oslJecZbRym153YCzA2i1I3+DxD87moFHyngn7gxj1RPu75ORUDtyX3R0N477K+OETQahRdP5k5H4/O4AUnHKKVHh9hentOrKrZgj8YfReceOZOeKcCVkU7diTF3J+QSOG4QOOIEkFOsHO8pIrr7EcmU3kHBckEze4YMbQZECDeaggQYU2a7TU5DxHDLSQOJpjau2qRl3t6TgGlSM3oLLUt+CswYrGLA6kXh2YLX4fI6G32To176rmo4DDXg4gLN6W8t1akDhRkGGuuVF9qHC8Emo8ZJQRzS7UDdjqKK+bv7Rbz7V+ZpEDujR200PQQ247w3oW3pwSSEeZjR3m7ogOnR4wRbIFRF9vK07JjcRQu86dH9dD4TTxNQdN2TGH7eVpC6eVdzN63JLq4zX7GHq75PjSAzO6iLdko/sSAWAGLWnheAdAys+JLdchMp7Mhlo7l3XOz5a1zy2OcJLc4RfmiMTjd+lxzekJ1jGcpE3X3Oowwyt6RhfcrGx2EqRPSqyR43tUX171I01KtpYo0LPHjWyR/XtUe2rBe0lGdlXCyJ7VPtqQWyNChdUK7BHXVAt+70FF1QrWmqgIvTc7cB4nbRG3i0z6lgGjnts27GKMJdWLWGS/x5o3z021rNuTlneUZ6K73YD1J6ylqfWQkWOhJ34B60OipKVPoDEkxdlk7FeIxLwHZzV95VaVCuxffnvwAippiZakH2Cei7XOVZvlR+IfCujhEaiKOoDbbnwMfkHaUWrkD878anPvDefxTpKuOkVC1zA06kMXjVtWFDV5QXJmLvviCzDVf3OOteERmp61DGeuWN0oCMzlWRHu/Kp10PxfAL78gcqMTODKIwmirXRjuTWdGWj1YqhQhZxTlmtZtmBuKKnf2rFYl74O6NjGS2arKK/EZm6f6TGhjbalM9YQAcRWUcHr1BwcfVu4olN8cSLW8pf21LR7aIEuV4ZUF77mpbT/yZBIy3vSE4FCz3xw7Fhlxnc8AV05OX2ATGb3fGViqEn/m7o+JsYoRx/uuikJq+bU9pTT7pndZkqJk32WdGSZQQvW8IB0PgA9m7qhUNDE+GJZyyzonCLTEsCML6j6S9J4uM8PRBCB3QtEVMUtWwyzjpiyBwju7u0BPLsSZ/Sm4aGNwkMoCmBvo1awM0itcBwjZSOkyyUUoz+JSnFaIEHg+F/yINhY7/gVecNlh4MB0uPG6InKvyaI5ltkeU/Dccyzktw0Itw8ItwgkU4qoe05zL9zrJmOM/UdqGObI0/Cm+tnqEXWlLtUl6nPeRFyRw1QSonaMjOfif+IeNvCVdobVrQknJF8RfMy70larJIVu80oGdFsYtUEsCP3i98723Cu8gNoUei3YXRslcYUTjPtq/DjNf9dkN255R4s+LVQ+9tda8evKdOO3oG4c8gXF67KmIdmDcP9snBQACXWh74Cy3Pb1+zPIHZ8hi5IkAr3s0YC7lS7yz7NlgvePB/wft1gidb9etyZ3TlQWhPH8Mbl3v6gHLz9Ps2mbyrd4DwjK16IPZxtIFRhKJNEOPz+R/+8pHU
 )";
@@ -656,7 +566,7 @@ R"(0eNrtWsuOm0gU/RfWEFFVQIE1mZ+Y2UUti4ZqdykYGB6dsVr+9ynAT8D4HhJlNZtEbZcP5577rGt/
 }
 
 
-static const char * product_iron1()
+const char * product_iron1()
 {
 return R"(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
 )";
