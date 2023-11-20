@@ -8,10 +8,21 @@ void Train_Stop::set_name( Item item, QString suffix )
     obj["station"] = item.label() + suffix;
 }
 //=======================================================================================
+void Train_Stop::replace( Item src, Item dst )
+{
+    auto station = obj["station"].toString();
+    station.replace( src.name, dst.name );
+    obj["station"] = station;
+}
+//=======================================================================================
+
 
 //=======================================================================================
-void Schedule::replace( int pos, Item _from, Item _to )
+void Schedules::replace( int pos, Item _from, Item _to )
 {
+    if ( pos >= arr.size() )
+        throw verror << "Schedule not exists";
+
     auto from = _from.label();
     auto to = _to.label();
 

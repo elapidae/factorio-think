@@ -4,6 +4,8 @@
 #include "vlog.h"
 #include "blueprint_io.h"
 #include "qdeb.h"
+#include "names.h"
+
 //=======================================================================================
 Blueprint_Book Blueprint_Book::do_import( const QByteArray &arr )
 {
@@ -51,7 +53,7 @@ QJsonObject Blueprint_Book::build() const
     res["blueprints"] = blueprints();
     res["icons"] = icons.build();
     res["item"] = "blueprint-book";
-    res[n_version] = version;
+    res[names::version] = version;
     return res;
 }
 //=======================================================================================
@@ -73,9 +75,9 @@ void Blueprint_Book::assign( const BluePrint& bp, const unsigned idx )
     cur_idx = std::max( cur_idx, idx + 1 );
 }
 //=======================================================================================
-void Blueprint_Book::shift_to( int idx )
+void Blueprint_Book::shift_to( unsigned idx )
 {
-    if ( idx < 0 || idx > 5 ) throw verror;
+    if ( idx > 5 ) throw verror;
     while ( cur_idx % 6 != idx )
     {
         ++cur_idx;

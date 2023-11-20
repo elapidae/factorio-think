@@ -24,7 +24,7 @@ public:
     void add( const BluePrint& bp );
     void assign( const BluePrint& bp, unsigned idx );
 
-    void shift_to( int idx ); // increase cur index to idx pos in line, from 0 to 5.
+    void shift_to( unsigned idx ); // increase cur index to idx pos in line, from 0 to 5.
     void next_line(); // increase cur index to mod 6 == 0
 
     Icons icons;

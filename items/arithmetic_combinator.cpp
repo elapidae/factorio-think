@@ -1,6 +1,7 @@
 #include "arithmetic_combinator.h"
 
 #include "json.h"
+#include "vlog.h"
 
 //=======================================================================================
 void Arithmetic_Combinator::first_signal( const Item& item )
@@ -19,5 +20,23 @@ void Arithmetic_Combinator::output_signal( const Item& item )
     ac[names::output_signal] = item.item_name_obj();
     cb[names::arithmetic_conditions] = ac;
     obj[names::control_behavior] = cb;
+}
+//=======================================================================================
+bool Arithmetic_Combinator::replace_in_out( const Item& src, const Item& dst )
+{
+    auto cb = obj[names::control_behavior].toObject();
+    auto ac = cb[names::arithmetic_conditions].toObject();
+
+    auto first = ac[names::first_signal].toObject()["name"].toString();
+    auto out   = ac[names::output_signal].toObject()["name"].toString();
+
+    if ( first.isEmpty() || first != out ) throw verror << "logic replace error";
+
+    if ( first != src.name ) return false;
+
+    // Now first == out == src.name, let's replace.
+    first_signal( dst );
+    output_signal( dst );
+    return true;
 }
 //=======================================================================================

@@ -269,7 +269,7 @@ Token decode( TokenList tokens )
     }
 
     vdeb << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
-    for(auto token: tokens)
+    for(auto && token: tokens)
         vdeb << token.level << token.val;
 
     exit(1);

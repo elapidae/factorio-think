@@ -4,18 +4,8 @@
 #include <QJsonArray>
 #include <QByteArray>
 #include "items/icons.h"
+#include "items/trains.h"
 #include "item.h"
-
-static constexpr auto n_blueprint   = "blueprint";
-
-static constexpr auto n_entities    = "entities";
-static constexpr auto n_item        = "item";
-static constexpr auto n_icons       = "icons";
-static constexpr auto n_schedules   = "schedules";
-static constexpr auto n_version     = "version";
-static constexpr auto n_tiles       = "tiles";
-//static constexpr auto n_     = "";
-//static constexpr auto n_     = "";
 
 
 //=======================================================================================
@@ -37,9 +27,24 @@ public:
     // override all burner inserters stack size == 1
     void set_burner_inserters_stack_size_1();
 
+    void arithmetic_combinators_replace_in_out( Item src, Item dst );
+
+    void constant_combinators_replace( Item src, Item dst );
+    void decider_combinators_replace_first_signal( const Item& src, const Item& dst );
+
+    void locomotives_init_fuel_coal( int count );
+    void locomotives_init_fuel_nuclear( int count );
+    void train_stops_replace( Item src, Item dst );
+
+    // Find items and remove field from object.
+    void remove_field( Item item, QString field );
+
+    QString description;
+    QString label;
+
     QJsonArray  entities;
     Icons       icons;
-    QJsonArray  schedules;
+    Schedules   schedules;
     quint64     version = 0;
 
     QJsonArray  tiles;

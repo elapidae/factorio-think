@@ -33,11 +33,14 @@ SOURCES += \
     mainwindow.cpp \
     make_books.cpp \
     parse_lua_recipe.cpp \
+    preparations/pr_assemble_tmpl.cpp \
+    preparations/pr_fluid_coalstation.cpp \
+    preparations/pr_fluids.cpp \
+    preparations/pr_science_before_rocket.cpp \
     preparations/pr_trains_v2.cpp \
     preparations/pr_uran.cpp \
     prototypes.cpp \
-    recipe.cpp \
-    templates.cpp
+    recipe.cpp
 
 HEADERS += \
     blueprint.h \
@@ -57,12 +60,15 @@ HEADERS += \
     make_books.h \
     names.h \
     parse_lua_recipe.h \
+    preparations/pr_assemble_tmpl.h \
+    preparations/pr_fluid_coalstation.h \
+    preparations/pr_fluids.h \
+    preparations/pr_science_before_rocket.h \
     preparations/pr_trains_v2.h \
     preparations/pr_uran.h \
     prototypes.h \
     recipe.h \
-    qdeb.h \
-    templates.h
+    qdeb.h
 
 FORMS += \
     mainwindow.ui

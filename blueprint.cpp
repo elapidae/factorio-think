@@ -3,8 +3,11 @@
 #include "vlog.h"
 #include "blueprint_io.h"
 #include "items/inserter.h"
+#include "items/constant_combinator.h"
+#include "items/decider_combinator.h"
+#include "items/arithmetic_combinator.h"
 #include "qdeb.h"
-
+#include "names.h"
 
 //=======================================================================================
 BluePrint BluePrint::do_import( QByteArray raw0 )
@@ -12,13 +15,13 @@ BluePrint BluePrint::do_import( QByteArray raw0 )
     auto bp = BluePrint_IO::extract( raw0 );
     //qdeb << bp;
     //exit(1);
-    return BluePrint( bp[n_blueprint].toObject() );
+    return BluePrint( bp[names::blueprint].toObject() );
 }
 //=======================================================================================
 QByteArray BluePrint::do_export() const
 {
     QJsonObject res;
-    res[n_blueprint] = build();
+    res[names::blueprint] = build();
     return BluePrint_IO::pack( res );
 }
 //=======================================================================================
@@ -27,21 +30,18 @@ QByteArray BluePrint::do_export() const
 //=======================================================================================
 BluePrint::BluePrint( QJsonObject bp )
 {
-    if ( bp.take(n_item).toString() != n_blueprint ) throw verror << "item != blueprint";
+    if ( bp.take(names::item).toString() != names::blueprint )
+        throw verror << "item != blueprint";
 
-    version = bp.take(n_version).toDouble();
+    version = bp.take(names::version).toDouble();
     if ( version <= 0 ) throw verror << version;
 
-    entities = bp.take(n_entities).toArray();
-
-    icons.load_raw( bp[n_icons].toArray() );
-    bp.remove( n_icons );
-
-    schedules = bp[n_schedules].toArray();
-    bp.remove( n_schedules );
-
-    tiles = bp[n_tiles].toArray();
-    bp.remove( n_tiles );
+    entities        = bp.take(names::entities).toArray();
+    icons.load_raw  ( bp.take(names::icons).toArray() );
+    schedules.arr   = bp.take(names::schedules).toArray();
+    tiles           = bp.take(names::tiles).toArray();
+    description     = bp.take(names::description).toString();
+    label           = bp.take(names::label).toString();
 
     if ( !bp.isEmpty() ) {
         throw verror << bp.keys();
@@ -52,14 +52,14 @@ QJsonObject BluePrint::build() const
 {
     QJsonObject res;
 
-    res[n_item]      = n_blueprint;
-    res[n_version]   = double( version );
+    res[names::item]      = names::blueprint;
+    res[names::version]   = double( version );
 
-    res[n_entities]  = entities;
-    res[n_icons]     = icons.build();
-    res[n_schedules] = schedules;
+    res[names::entities]  = entities;
+    res[names::icons]     = icons.build();
+    res[names::schedules] = schedules.arr;
 
-    res[n_tiles]     = tiles;
+    res[names::tiles]     = tiles;
 
     return res;
 }
@@ -95,6 +95,83 @@ void BluePrint::set_burner_inserters_stack_size_1()
         Inserter inserter( o );
         inserter.set_override_stack_size( 1 );
         e = inserter.obj;
+    }
+}
+//=======================================================================================
+void BluePrint::arithmetic_combinators_replace_in_out(Item src, Item dst)
+{
+    auto list = find( Item::get(names::arithmetic_combinator) );
+    for ( auto ref: list )
+    {
+        Arithmetic_Combinator2 ac( ref );
+        ac.replace_in_out( src, dst );
+    }
+}
+//=======================================================================================
+void BluePrint::constant_combinators_replace( Item src, Item dst )
+{
+    auto list = find( Item::get(names::constant_combinator) );
+    for ( auto ref: list )
+    {
+        Constant_Combinator2( ref )
+                .replace( src, dst );
+    }
+}
+//=======================================================================================
+void BluePrint::decider_combinators_replace_first_signal
+                                ( const Item& src, const Item& dst )
+{
+    auto list = find( Item::get(names::decider_combinator) );
+    for ( auto ref: list )
+    {
+        Decider_Combinator2 dc( ref );
+        dc.replace_first_signal( src, dst );
+    }
+}
+//=======================================================================================
+void BluePrint::locomotives_init_fuel_coal( int count )
+{
+    auto list = find( Item::Named::locomotive() );
+    for ( auto ref: list )
+    {
+        auto l = Locomotive{ ref.toObject() };
+        l.clear_fuel();
+        l.coal( count );
+        ref = l.obj;
+    }
+}
+//=======================================================================================
+void BluePrint::locomotives_init_fuel_nuclear( int count )
+{
+    auto list = find( Item::Named::locomotive() );
+    for ( auto ref: list )
+    {
+        auto l = Locomotive{ ref.toObject() };
+        l.clear_fuel();
+        l.nuclear_fuel( count );
+        ref = l.obj;
+    }
+}
+//=======================================================================================
+void BluePrint::train_stops_replace( Item src, Item dst )
+{
+    auto list = find( Item::Named::train_stop() );
+    for ( auto ref: list )
+    {
+        auto ts = Train_Stop{ ref.toObject() };
+        ts.replace( src, dst );
+        ref = ts.obj;
+    }
+}
+//=======================================================================================
+void BluePrint::remove_field( Item item, QString field )
+{
+    auto list = find( item );
+    for ( auto ref: list )
+    {
+        auto obj = ref.toObject();
+        obj.remove( field );
+        ref = obj;
     }
 }
 //=======================================================================================

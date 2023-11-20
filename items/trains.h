@@ -10,9 +10,11 @@ public:
     QJsonObject obj;
 
     void set_name( Item item, QString suffix );
+
+    void replace( Item src, Item dst );
 };
 //=======================================================================================
-class Schedule
+class Schedules
 {
 public:
     QJsonArray arr;

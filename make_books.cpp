@@ -17,44 +17,44 @@
 void copy_to_clipboard( QByteArray arr );
 
 //=======================================================================================
-static auto mining_entities = []
-{
-    QList<Item> res;
-    //res.append( Item::Named::coal() );
-    res.append( Item::stone()       );
-    res.append( Item::iron_ore()    );
-    res.append( Item::copper_ore()  );
-    res.append( Item::uranium_ore() );
+//static auto mining_entities = []
+//{
+//    QList<Item> res;
+//    //res.append( Item::Named::coal() );
+//    res.append( Item::Named::stone()       );
+//    res.append( Item::Named::iron_ore()    );
+//    res.append( Item::Named::copper_ore()  );
+//    res.append( Item::Named::uranium_ore() );
 
-    return res;
-}();
+//    return res;
+//}();
 //=======================================================================================
-static auto second_entities = []
-{
-    QList<Item> res;
+//static auto second_entities = []
+//{
+//    QList<Item> res;
 
-    res.append( Item::iron_plate()  );
-    res.append( Item::copper_plate());
-    res.append( Item::steel_plate() );
+//    res.append( Item::Named::iron_plate()  );
+//    res.append( Item::Named::copper_plate());
+//    res.append( Item::Named::steel_plate() );
 
-    res.append( Item::plastic_bar() );
-    res.append( Item::electronic_circuit() );
+//    res.append( Item::Named::plastic_bar() );
+//    res.append( Item::Named::electronic_circuit() );
 
-    return res;
-}();
+//    return res;
+//}();
 //---------------------------------------------------------------------------------------
 static auto fluid_entities = []
 {
     QList<Item> res;
-    res.append( Item::water()         );
-    res.append( Item::crude_oil()     );
-    res.append( Item::steam()         );
-    res.append( Item::heavy_oil()     );
-    res.append( Item::light_oil()     );
+    res.append( Item::Named::water()         );
+    res.append( Item::Named::crude_oil()     );
+    res.append( Item::Named::steam()         );
+    res.append( Item::Named::heavy_oil()     );
+    res.append( Item::Named::light_oil()     );
 
-    res.append( Item::petroleum_gas() );
-    res.append( Item::sulfuric_acid() );
-    res.append( Item::lubricant()     );
+    res.append( Item::Named::petroleum_gas() );
+    res.append( Item::Named::sulfuric_acid() );
+    res.append( Item::Named::lubricant()     );
 
     return res;
 }();
@@ -289,7 +289,7 @@ static QJsonObject make_train_book()
     QJsonObject obj;
 
     obj["index"] = 1;
-    obj["signal"] = Item::train_stop().item_name_obj();
+    obj["signal"] = Item::Named::train_stop().item_name_obj();
     icons.append( obj );
 
     obj["index"] = 2;
@@ -310,11 +310,11 @@ static QJsonObject make_fluid_book()
     QJsonObject obj;
 
     obj["index"] = 1;
-    obj["signal"] = Item::train_stop().item_name_obj();
+    obj["signal"] = Item::Named::train_stop().item_name_obj();
     icons.append( obj );
 
     obj["index"] = 2;
-    obj["signal"] = Item::water().item_name_obj();
+    obj["signal"] = Item::Named::water().item_name_obj();
     icons.append( obj );
 
     res["icons"] = icons;
@@ -345,10 +345,10 @@ static void make_fluid()
     {
         QJsonObject obj;
         obj["index"] = idx;
-        obj["blueprint"] = change_blueprint( water_r1, Item::water(), dst );
+        obj["blueprint"] = change_blueprint( water_r1, Item::Named::water(), dst );
         blueprints.append( obj );
         obj["index"] = idx + 1;
-        obj["blueprint"] = change_blueprint( water_s1, Item::water(), dst );
+        obj["blueprint"] = change_blueprint( water_s1, Item::Named::water(), dst );
         blueprints.append( obj );
         idx += 6;
     }
@@ -371,7 +371,7 @@ static QJsonObject make_mining1_book()
     QJsonObject obj;
 
     obj["index"] = 1;
-    obj["signal"] = Item::train_stop().item_name_obj();
+    obj["signal"] = Item::Named::train_stop().item_name_obj();
     icons.append( obj );
 
     obj["index"] = 2;
@@ -390,7 +390,7 @@ static const char * coal_R_quick4();
 static void make_mining()
 {
     auto book = make_mining1_book();
-    int idx = 0;
+    //int idx = 0;
     QJsonArray blueprints;
 
     auto m1 = extract_blueprint( coal_M1() );
@@ -398,23 +398,23 @@ static void make_mining()
     auto s1 = extract_blueprint( coal_S1() );
     auto r1 = extract_blueprint( coal_R1() );
 
-    for ( auto & dst: second_entities )
-    {
-        QJsonObject obj;
-        obj["index"] = idx + 0;
-        obj["blueprint"] = change_blueprint( m1, Item::Named::coal(), dst );
-        blueprints.append( obj );
-        obj["index"] = idx + 1;
-        obj["blueprint"] = change_blueprint( w1, Item::Named::coal(), dst );
-        blueprints.append( obj );
-        obj["index"] = idx + 2;
-        obj["blueprint"] = change_blueprint( s1, Item::Named::coal(), dst );
-        blueprints.append( obj );
-        obj["index"] = idx + 3;
-        obj["blueprint"] = change_blueprint( r1, Item::Named::coal(), dst );
-        blueprints.append( obj );
-        idx += 6;
-    }
+//    for ( auto & dst: second_entities )
+//    {
+//        QJsonObject obj;
+//        obj["index"] = idx + 0;
+//        obj["blueprint"] = change_blueprint( m1, Item::Named::coal(), dst );
+//        blueprints.append( obj );
+//        obj["index"] = idx + 1;
+//        obj["blueprint"] = change_blueprint( w1, Item::Named::coal(), dst );
+//        blueprints.append( obj );
+//        obj["index"] = idx + 2;
+//        obj["blueprint"] = change_blueprint( s1, Item::Named::coal(), dst );
+//        blueprints.append( obj );
+//        obj["index"] = idx + 3;
+//        obj["blueprint"] = change_blueprint( r1, Item::Named::coal(), dst );
+//        blueprints.append( obj );
+//        idx += 6;
+//    }
     //-----------------------------------------------------------------------------------
     book["blueprints"] = blueprints;
 
@@ -450,7 +450,7 @@ static QJsonObject make_product1_book()
     QJsonObject obj;
 
     obj["index"] = 1;
-    obj["signal"] = Item::train_stop().item_name_obj();
+    obj["signal"] = Item::Named::train_stop().item_name_obj();
     icons.append( obj );
 
     obj["index"] = 2;
@@ -486,15 +486,15 @@ static void make_product1()
     idx += 1;
     //-----------------------------------------------------------------------------------
     obj["index"] = idx;
-    auto p2 = change_blueprint( p1, Item::iron_ore(), Item::copper_ore() );
-    p2 = change_blueprint( p2, Item::iron_plate(), Item::copper_plate() );
+    auto p2 = change_blueprint( p1, Item::Named::iron_ore(), Item::Named::copper_ore() );
+    p2 = change_blueprint( p2, Item::Named::iron_plate(), Item::Named::copper_plate() );
     obj["blueprint"] = p2;
     blueprints.append( obj );
     idx += 1;
     //-----------------------------------------------------------------------------------
     obj["index"] = idx;
-    p1 = change_blueprint( p1, Item::iron_plate(), Item::steel_plate() );
-    p1 = change_blueprint( p1, Item::iron_ore(),   Item::iron_plate() );
+    p1 = change_blueprint( p1, Item::Named::iron_plate(), Item::Named::steel_plate() );
+    p1 = change_blueprint( p1, Item::Named::iron_ore(),   Item::Named::iron_plate() );
     obj["blueprint"] = p1;
     blueprints.append( obj );
 //    idx += 1;

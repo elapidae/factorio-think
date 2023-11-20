@@ -13,6 +13,14 @@ void Decider_Combinator::first_signal( Item item )
     Json::find_set( &obj, val, key0, key1, key2 );
 }
 //=======================================================================================
+QString Decider_Combinator::first_signal_name() const
+{
+    auto cb = Json::get_obj( obj, names::control_behavior );
+    auto dc = Json::get_obj( cb, names::decider_conditions );
+    auto fs = Json::get_obj( dc, names::first_signal );
+    return fs["name"].toString();
+}
+//=======================================================================================
 void Decider_Combinator::constant( int val )
 {
     auto key0 = names::control_behavior;

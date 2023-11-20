@@ -23,36 +23,37 @@ public:
 
     struct Named
     {
-        static Item train_stop() { return get("train-stop"); }
-        static Item locomotive() { return get("locomotive"); }
-
-        static Item coal()       { return get("coal"); }
+        //----
         static Item virtual_signal( QString name ) { return Item::virtual_signal(name); }
+        //----
+        static Item train_stop()    { return get("train-stop");     }
+        static Item locomotive()    { return get("locomotive");     }
+
+        static Item coal()          { return get("coal");           }
+        static Item stone()         { return get("stone");          }
+        static Item iron_ore()      { return get("iron-ore");       }
+        static Item copper_ore()    { return get("copper-ore");     }
+        static Item uranium_ore()   { return get("uranium-ore");    }
+
+        static Item iron_plate()    { return get("iron-plate");     }
+        static Item copper_plate()  { return get("copper-plate");   }
+        static Item steel_plate()   { return get("steel-plate");    }
+
+        static Item plastic_bar()         { return get("plastic-bar");          }
+        static Item electronic_circuit()  { return get("electronic-circuit");   }
+        static Item battery()             { return get("battery");              }
+        static Item sulfur()              { return get("sulfur");               }
+        static Item explosives()          { return get("explosives");           }
+
+        static Item water()           { return fluid("water");            }
+        static Item crude_oil()       { return fluid("crude-oil");        }
+        static Item steam()           { return fluid("steam");            }
+        static Item heavy_oil()       { return fluid("heavy-oil");        }
+        static Item light_oil()       { return fluid("light-oil");        }
+        static Item petroleum_gas()   { return fluid("petroleum-gas");    }
+        static Item sulfuric_acid()   { return fluid("sulfuric-acid");    }
+        static Item lubricant()       { return fluid("lubricant");        }
     };
-
-    static Item stone()         { return item(50, "stone");          }
-    static Item iron_ore()      { return item(50, "iron-ore");       }
-    static Item copper_ore()    { return item(50, "copper-ore");     }
-    static Item uranium_ore()   { return item(50, "uranium-ore");    }
-
-    static Item iron_plate()    { return item(100, "iron-plate");    }
-    static Item copper_plate()  { return item(100, "copper-plate");  }
-    static Item steel_plate()   { return item(100, "steel-plate");   }
-
-    static Item plastic_bar()         { return item(100, "plastic-bar");          }
-    static Item electronic_circuit()  { return item(200, "electronic-circuit");   }
-
-
-    static Item train_stop()    { return item(-1, "train-stop");    }
-
-    static Item water()           { return fluid("water");            }
-    static Item crude_oil()       { return fluid("crude-oil");        }
-    static Item steam()           { return fluid("steam");            }
-    static Item heavy_oil()       { return fluid("heavy-oil");        }
-    static Item light_oil()       { return fluid("light-oil");        }
-    static Item petroleum_gas()   { return fluid("petroleum-gas");    }
-    static Item sulfuric_acid()   { return fluid("sulfuric-acid");    }
-    static Item lubricant()       { return fluid("lubricant");        }
 
     static Item virtual_signal( QString name );
 

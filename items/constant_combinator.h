@@ -5,6 +5,7 @@
 #include "item.h"
 #include "recipe.h"
 
+//=======================================================================================
 class Constant_Combinator
 {
 public:
@@ -31,3 +32,19 @@ private:
     QJsonArray filters() const;
     void filters( QJsonArray );
 };
+//=======================================================================================
+class Constant_Combinator2
+{
+public:
+    Constant_Combinator2( QJsonValueRef ref ) : ref( ref ) {}
+
+    void replace( Item src, Item dst )
+    {
+        Constant_Combinator cc{ ref.toObject() };
+        cc.replace_all( src, dst );
+        ref = cc.obj;
+    }
+private:
+    QJsonValueRef ref;
+};
+//=======================================================================================

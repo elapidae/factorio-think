@@ -15,6 +15,17 @@ namespace names
     static constexpr auto output_signal = "output_signal";
     static constexpr auto direction = "direction";
     static constexpr auto filters = "filters";
+
+    static constexpr auto blueprint   = "blueprint";
+
+    static constexpr auto entities      = "entities";
+    static constexpr auto item          = "item";
+    static constexpr auto icons         = "icons";
+    static constexpr auto schedules     = "schedules";
+    static constexpr auto version       = "version";
+    static constexpr auto tiles         = "tiles";
+    static constexpr auto description   = "description";
+    static constexpr auto label         = "label";
 };
 //=======================================================================================
 
