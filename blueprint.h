@@ -47,6 +47,10 @@ public:
     Schedules   schedules;
     quint64     version = 0;
 
+    bool absolute_snapping {false};
+    QJsonObject position_relative_to_grid;
+    QJsonObject snap_to_grid;
+
     QJsonArray  tiles;
 };
 //=======================================================================================

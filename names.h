@@ -17,6 +17,7 @@ namespace names
     static constexpr auto filters = "filters";
 
     static constexpr auto blueprint   = "blueprint";
+    static constexpr auto deconstruction_planner = "deconstruction_planner";
 
     static constexpr auto entities      = "entities";
     static constexpr auto item          = "item";
@@ -26,6 +27,10 @@ namespace names
     static constexpr auto tiles         = "tiles";
     static constexpr auto description   = "description";
     static constexpr auto label         = "label";
+
+    static constexpr auto absolute_snapping         = "absolute-snapping";
+    static constexpr auto position_relative_to_grid = "position-relative-to-grid";
+    static constexpr auto snap_to_grid              = "snap-to-grid";
 };
 //=======================================================================================
 

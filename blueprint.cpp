@@ -30,19 +30,25 @@ QByteArray BluePrint::do_export() const
 //=======================================================================================
 BluePrint::BluePrint( QJsonObject bp )
 {
+    //-----------------------------------------------------------------------------------
     if ( bp.take(names::item).toString() != names::blueprint )
         throw verror << "item != blueprint";
 
     version = bp.take(names::version).toDouble();
     if ( version <= 0 ) throw verror << version;
 
+    description     = bp.take(names::description).toString();
+    label           = bp.take(names::label).toString();
+    //-----------------------------------------------------------------------------------
     entities        = bp.take(names::entities).toArray();
     icons.load_raw  ( bp.take(names::icons).toArray() );
     schedules.arr   = bp.take(names::schedules).toArray();
     tiles           = bp.take(names::tiles).toArray();
-    description     = bp.take(names::description).toString();
-    label           = bp.take(names::label).toString();
-
+    //-----------------------------------------------------------------------------------
+    absolute_snapping           = bp.take(names::absolute_snapping).toBool();
+    position_relative_to_grid   = bp.take(names::position_relative_to_grid).toObject();
+    snap_to_grid                = bp.take(names::snap_to_grid).toObject();
+    //-----------------------------------------------------------------------------------
     if ( !bp.isEmpty() ) {
         throw verror << bp.keys();
     }
@@ -51,16 +57,26 @@ BluePrint::BluePrint( QJsonObject bp )
 QJsonObject BluePrint::build() const
 {
     QJsonObject res;
-
-    res[names::item]      = names::blueprint;
-    res[names::version]   = double( version );
-
+    //-----------------------------------------------------------------------------------
+    res[names::item]        = names::blueprint;
+    res[names::version]     = double( version );
+    res[names::description] = description;
+    res[names::label]       = label;
+    //-----------------------------------------------------------------------------------
     res[names::entities]  = entities;
     res[names::icons]     = icons.build();
     res[names::schedules] = schedules.arr;
-
     res[names::tiles]     = tiles;
+    //-----------------------------------------------------------------------------------
+    if ( absolute_snapping )
+        res[names::absolute_snapping] = absolute_snapping;
 
+    if ( !position_relative_to_grid.isEmpty() )
+        res[names::position_relative_to_grid] = position_relative_to_grid;
+
+    if ( !snap_to_grid.isEmpty() )
+        res[names::snap_to_grid] = snap_to_grid;
+    //-----------------------------------------------------------------------------------
     return res;
 }
 //=======================================================================================

@@ -4,8 +4,6 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include "vlog.h"
-#include <QDebug>
-#define qdeb qDebug() << basename(__FILE__) << __LINE__
 
 //=======================================================================================
 static auto _load = []

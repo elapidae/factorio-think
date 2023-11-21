@@ -5,8 +5,9 @@
 class PR_Uran
 {
 public:
-    PR_Uran();
+    static Blueprint_Book build();
 
 private:
+    static QByteArray as_is();
     static QByteArray refined_station_template();
 };

@@ -22,8 +22,8 @@ Blueprint_Book Blueprint_Book::do_import( const QByteArray &arr )
 
     auto label = obj["label"].toString();
     auto desc  = obj["description"].toString();
-    Blueprint_Book res( label, desc );
 
+    Blueprint_Book res( label, desc );
     res.version = obj["version"].toDouble();
     res.icons.load_raw( obj["icons"].toArray() );
 
@@ -31,10 +31,23 @@ Blueprint_Book Blueprint_Book::do_import( const QByteArray &arr )
     for ( auto bp: bps )
     {
         auto o = bp.toObject();
-        auto cur_bp_obj = o["blueprint"].toObject();
-        auto idx = o["index"].toDouble();
-        auto cur_bp = BluePrint( cur_bp_obj );
-        res.blueprints_map.emplace( idx, cur_bp );
+        auto idx = o.take("index").toDouble();
+        auto keys = o.keys();
+        if ( keys.size() != 1 ) throw verror << "Strange planner " << keys;
+        if ( keys.at(0) == names::blueprint )
+        {
+            auto cur_bp = BluePrint( o.take(names::blueprint).toObject() );
+            res.blueprints_map.emplace( idx, cur_bp );
+            continue;
+        }
+        if ( keys.at(0) == names::deconstruction_planner )
+        {
+            Deconstruction_Planner cur_dp;
+            cur_dp.obj = o.take(names::deconstruction_planner).toObject();
+            res.deconstructions_map.emplace( idx, cur_dp );
+            continue;
+        }
+        throw verror << keys;
     }
     return res;
 }
@@ -105,6 +118,13 @@ QJsonArray Blueprint_Book::blueprints() const
         QJsonObject o;
         o["index"] = double(idx);
         o["blueprint"] = bp.build();
+        res.append( o );
+    }
+    for ( const auto& [idx, dp]: deconstructions_map )
+    {
+        QJsonObject o;
+        o["index"] = double(idx);
+        o[names::deconstruction_planner] = dp.obj;
         res.append( o );
     }
     return res;

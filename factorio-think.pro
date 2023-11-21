@@ -21,7 +21,9 @@ SOURCES += \
     bprint_landfill.cpp \
     blueprint_io.cpp \
     clipboard.cpp \
+    deconstruction_planner.cpp \
     items/arithmetic_combinator.cpp \
+    items/assembler_machines.cpp \
     items/constant_combinator.cpp \
     item.cpp \
     items/decider_combinator.cpp \
@@ -32,13 +34,15 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     make_books.cpp \
-    parse_lua_recipe.cpp \
     preparations/pr_assemble_tmpl.cpp \
+    preparations/pr_burn_prod_green_as_is.cpp \
+    preparations/pr_descructors.cpp \
     preparations/pr_fluid_coalstation.cpp \
     preparations/pr_fluids.cpp \
     preparations/pr_science_before_rocket.cpp \
     preparations/pr_trains_v2.cpp \
     preparations/pr_uran.cpp \
+    preparations/pr_zero_book_as_is.cpp \
     prototypes.cpp \
     recipe.cpp
 
@@ -48,7 +52,9 @@ HEADERS += \
     bprint_landfill.h \
     blueprint_io.h \
     clipboard.h \
+    deconstruction_planner.h \
     items/arithmetic_combinator.h \
+    items/assembler_machines.h \
     items/constant_combinator.h \
     item.h \
     items/decider_combinator.h \
@@ -59,13 +65,15 @@ HEADERS += \
     mainwindow.h \
     make_books.h \
     names.h \
-    parse_lua_recipe.h \
     preparations/pr_assemble_tmpl.h \
+    preparations/pr_burn_prod_green_as_is.h \
+    preparations/pr_descructors.h \
     preparations/pr_fluid_coalstation.h \
     preparations/pr_fluids.h \
     preparations/pr_science_before_rocket.h \
     preparations/pr_trains_v2.h \
     preparations/pr_uran.h \
+    preparations/pr_zero_book_as_is.h \
     prototypes.h \
     recipe.h \
     qdeb.h

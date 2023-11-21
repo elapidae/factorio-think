@@ -4,6 +4,7 @@
 #include <QJsonArray>
 
 #include "blueprint.h"
+#include "deconstruction_planner.h"
 #include "items/icons.h"
 
 //constexpr static auto n_version     = "version";
@@ -37,6 +38,7 @@ private:
 
     QJsonArray blueprints() const;
     std::map<unsigned, BluePrint> blueprints_map;
+    std::map<unsigned, Deconstruction_Planner> deconstructions_map;
     QString label;
     QString description;
 
