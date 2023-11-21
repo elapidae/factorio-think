@@ -1,0 +1,16 @@
+Основной гайд
+https://wiki.factorio.com/Tutorial:Mod_structure
+
+    info.json — The only mandatory file. The info.json identifies the mod, defines its version and other general properties.
+    changelog.txt — Version history of the mod, to be shown in the mod browser. The changelog file must follow the strict formatting requirements.
+    thumbnail.png — Thumbnail to be shown on the mod portal and in the mod browser in-game. Ideally a 144x144px image file.
+
+    settings.lua — This and the next two files are used to set up mod configuration options.
+    settings-updates.lua
+    settings-final-fixes.lua
+
+    data.lua — This and the next two files are used to define prototypes.
+    data-updates.lua — The load order of the three data*.lua files is explained on Data-Lifecycle.
+    data-final-fixes.lua
+
+    control.lua — This file is used for runtime scripting. Runtime scripting is documented on lua-api.factorio.com.
