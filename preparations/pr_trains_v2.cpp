@@ -42,6 +42,7 @@ Blueprint_Book PR_Trains_V2::build()
 
     // send for product lines
     gen_fn = send_mine_6;
+    res.add( gen_fn(Item::Named::uranium_ore())         );
     res.add( gen_fn(Item::Named::iron_plate())          );
     res.add( gen_fn(Item::Named::steel_plate())         );
     res.add( gen_fn(Item::Named::copper_plate())        );
@@ -85,6 +86,11 @@ Blueprint_Book PR_Trains_V2::build()
     res.next_line();
 
     return res;
+}
+//=======================================================================================
+BluePrint PR_Trains_V2::receive_1L_6_wooden_chests( Item item )
+{
+    return rv2_6_wood_chests( item );
 }
 //=======================================================================================
 BluePrint PR_Trains_V2::send_mine_6( Item item )
@@ -256,12 +262,7 @@ static BluePrint rv2_12_wood_chests( Item item )
     // - set override size of burner inserters to 1;
     res.set_burner_inserters_stack_size_1();
 
-    // - find & correct arithmetic combinator [inserters to belt];
-    auto rac = res.find_unique( Item::get(names::arithmetic_combinator) );
-    auto ac = Arithmetic_Combinator{ rac.toObject() };
-    ac.first_signal( item );
-    ac.output_signal( item );
-    rac = ac.obj;
+    res.arithmetic_combinators_replace_in_out( iron, item );
 
     // - find & correct decider combinator [train limit];
     auto rdc = res.find_unique( Item::get(names::decider_combinator) );
@@ -285,6 +286,9 @@ static BluePrint rv2_12_wood_chests( Item item )
     auto ts = Train_Stop{ rtrain.toObject() };
     ts.set_name( item, "receive" );
     rtrain = ts.obj;
+
+    //  gluk from blueprint
+    res.remove_field( Item::get("wooden-chest"), "bar" );
 
     return res;
 }

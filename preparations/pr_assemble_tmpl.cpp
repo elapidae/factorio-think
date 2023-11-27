@@ -1,6 +1,5 @@
 #include "pr_assemble_tmpl.h"
 
-#include "items/assembler_machines.h"
 #include "qdeb.h"
 
 //=======================================================================================
