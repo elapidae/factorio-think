@@ -16,7 +16,9 @@ public:
     bool replace_in_out( const Item& src, const Item& dst );
 
     void set_operation(); // not implemented
-    void set_second_constant( int val ); // not implemented
+
+    int  second_constant() const; // not implemented
+    void second_constant( int val ); // not implemented
 };
 //=======================================================================================
 class Arithmetic_Combinator2

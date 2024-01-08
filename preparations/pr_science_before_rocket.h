@@ -9,7 +9,7 @@ class PR_Science_Before_Rocket
 public:
     PR_Science_Before_Rocket();
 
-    static Blueprint_Book build();
+    static BluePrint_Book build();
 
 private:
     static QByteArray tmpl();

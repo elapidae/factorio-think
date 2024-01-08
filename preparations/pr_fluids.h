@@ -6,7 +6,7 @@
 class PR_Fluids
 {
 public:
-    static Blueprint_Book build();
+    static BluePrint_Book build();
 
 private:
     static QByteArray prod_second_circle();

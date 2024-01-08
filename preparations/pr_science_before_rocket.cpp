@@ -2,9 +2,9 @@
 
 
 //=======================================================================================
-Blueprint_Book PR_Science_Before_Rocket::build()
+BluePrint_Book PR_Science_Before_Rocket::build()
 {
-    return Blueprint_Book::do_import( tmpl() );
+    return BluePrint_Book::do_import( tmpl() );
 }
 //=======================================================================================
 QByteArray PR_Science_Before_Rocket::tmpl()

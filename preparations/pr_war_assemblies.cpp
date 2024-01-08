@@ -24,9 +24,9 @@ PR_War_Assemblies::PR_War_Assemblies()
     }
 }
 
-Blueprint_Book PR_War_Assemblies::build()
+BluePrint_Book PR_War_Assemblies::build()
 {
-    Blueprint_Book res;
+    BluePrint_Book res;
     res.icons.set( 1, Item::Named::virtual_signal("W") );
     res.icons.set( 2, Item::Named::virtual_signal("A") );
     res.icons.set( 3, Item::Named::virtual_signal("R") );

@@ -16,7 +16,7 @@ struct AssembleTmpl
 
 
 //=======================================================================================
-Blueprint_Book PR_Assemble_tmpl::S2_templates()
+BluePrint_Book PR_Assemble_tmpl::S2_templates()
 {
     static auto list = []
     {
@@ -25,7 +25,7 @@ Blueprint_Book PR_Assemble_tmpl::S2_templates()
                 << "radar"
         ;// it is ok
     }();
-    Blueprint_Book res;
+    BluePrint_Book res;
     for ( auto && l: list )
     {
         res.add( prepare(Item::get(l)) );

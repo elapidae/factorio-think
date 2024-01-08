@@ -1,9 +1,9 @@
 #include "pr_descructors.h"
 
 //=======================================================================================
-Blueprint_Book PR_Descructors::build()
+BluePrint_Book PR_Descructors::build()
 {
-    return Blueprint_Book::do_import( tmpl() );
+    return BluePrint_Book::do_import( tmpl() );
 }
 //=======================================================================================
 QByteArray PR_Descructors::tmpl()

@@ -21,6 +21,14 @@ QString Decider_Combinator::first_signal_name() const
     return fs["name"].toString();
 }
 //=======================================================================================
+int Decider_Combinator::constant() const
+{
+    return obj
+            [names::control_behavior].toObject()
+            [names::decider_conditions].toObject()
+            ["constant"].toDouble();
+}
+//=======================================================================================
 void Decider_Combinator::constant( int val )
 {
     auto key0 = names::control_behavior;

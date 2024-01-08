@@ -3,9 +3,9 @@
 #include "blueprint_io.h"
 
 //=======================================================================================
-Blueprint_Book PR_Fluid_CoalStation::rs_pairs()
+BluePrint_Book PR_Fluid_CoalStation::rs_pairs()
 {
-    Blueprint_Book res;
+    BluePrint_Book res;
 
     res.add( rs_pair(Item::Named::heavy_oil()) );
     res.add( rs_pair(Item::Named::light_oil()) );

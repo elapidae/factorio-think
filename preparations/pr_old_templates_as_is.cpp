@@ -1,9 +1,9 @@
 #include "pr_old_templates_as_is.h"
 
 
-Blueprint_Book PR_Old_Templates_AS_IS::build()
+BluePrint_Book PR_Old_Templates_AS_IS::build()
 {
-    return Blueprint_Book::do_import( as_is() );
+    return BluePrint_Book::do_import( as_is() );
 }
 
 QByteArray PR_Old_Templates_AS_IS::as_is()

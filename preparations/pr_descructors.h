@@ -6,7 +6,7 @@
 class PR_Descructors
 {
 public:
-    static Blueprint_Book build();
+    static BluePrint_Book build();
 
     static QByteArray tmpl();
 };

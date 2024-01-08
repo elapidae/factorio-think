@@ -4,10 +4,11 @@
 #include "blueprint.h"
 #include "vlog.h"
 #include "items/constant_combinator.h"
+#include "items/assembling_machine.h"
 #include <QFile>
 
-#include <QDebug>
-#define qdeb qDebug() << __FILE__ << __LINE__
+#include "qdeb.h"
+
 
 //=======================================================================================
 static QJsonArray read_recipes()
@@ -80,7 +81,7 @@ struct Tmpl
     void apply( QString item, int amount )
     {
         auto it = Item::get( item );
-        qdeb << it.debug();
+        //qdeb << it.debug();
         //return;
         it.type = "item";
         auto m = bp.entities[machine].toObject();
@@ -100,7 +101,8 @@ struct Tmpl
         bp.entities[count_combinator] = ccount.obj;
 
         Constant_Combinator crecipe{ bp.entities[recipe_combinator].toObject() };
-        crecipe.save_recipe( Recipe::get(item) );
+        auto rec = Recipe::get( item );
+        crecipe.save_recipe( rec );
         bp.entities[recipe_combinator] = crecipe.obj;
 
         bp.icons.set( 2, it );
@@ -132,20 +134,38 @@ private:
     }
 }; // Tmpl
 //=======================================================================================
-BluePrint Recipe::make_assemble_2(QString iname, int amount)
+BluePrint Recipe::make_assemble_2( QString iname, int amount )
 {
+    if ( amount > 0 )
+        throw verror << "amount must be < 0";
+
     auto res = Tmpl::prepare_tmpl();
     res.apply( iname, amount );
     return res.bp;
 }
 //=======================================================================================
-QJsonObject Recipe::bp_gen0()
+QList<Item> Recipe::extract_recipies( BluePrint bp )
 {
-    QJsonObject res;
-
-
-
+    QList<Item> res;
+    auto list = bp.find_assembling_machines();
+    for ( auto it: list )
+    {
+        Assembling_Machine m{ it.toObject() };
+        auto r = m.recipe();
+        if ( r.is_valid() )
+            res << r;
+    }
     return res;
+}
+//=======================================================================================
+BluePrint Recipe::form_in_assembling_machine_2( Item item )
+{
+    auto iname = item.name;
+    auto amount = - item.prefer_assemble_count();
+
+    auto res = Tmpl::prepare_tmpl();
+    res.apply( iname, amount );
+    return res.bp;
 }
 //=======================================================================================
 

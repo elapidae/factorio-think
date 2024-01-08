@@ -7,13 +7,16 @@
 //=======================================================================================
 QJsonArray Constant_Combinator::filters() const
 {
+    if ( !obj.contains(names::control_behavior) )
+        return {};
+
     auto cb = Json::get_obj( obj, names::control_behavior );
     return cb[ names::filters ].toArray();
 }
 //=======================================================================================
 void Constant_Combinator::filters( QJsonArray arr )
 {
-    auto cb = Json::get_obj( obj, names::control_behavior );
+    auto cb = obj[names::control_behavior].toObject();
     cb[ names::filters ] = arr;
     obj[ names::control_behavior ] = cb;
 }

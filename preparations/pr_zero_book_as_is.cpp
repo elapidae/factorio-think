@@ -2,9 +2,9 @@
 
 //=======================================================================================
 //=======================================================================================
-Blueprint_Book PR_Zero_Book_AS_IS::build()
+BluePrint_Book PR_Zero_Book_AS_IS::build()
 {
-    return Blueprint_Book::do_import( tmpl() );
+    return BluePrint_Book::do_import( tmpl() );
 }
 //=======================================================================================
 QByteArray PR_Zero_Book_AS_IS::tmpl()

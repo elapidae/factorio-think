@@ -30,12 +30,15 @@ public:
     int prefer_assemble_count() const { return assemble_count; }
     const Item& prefer_assemble_count(int cnt) { assemble_count = cnt; return *this; }
 
-    Item() {} // invalid.
+    Item() { valid = false; } // invalid.
     Item( const QJsonObject& o );
+
+    bool is_valid() const { return valid; }
 
 private:
     Item( int s, QString t, QString n );
 public:
+    bool    valid      = true;
     int     stack_size = -1;
     QString item_type  = "";
     QString type       = "bad";
@@ -67,6 +70,8 @@ struct Item::Named
 
     static Item plastic_bar()         { return get("plastic-bar");          }
     static Item electronic_circuit()  { return get("electronic-circuit");   }
+    static Item advanced_circuit()    { return get("advanced-circuit");     }
+    static Item processing_unit()     { return get("processing-unit");      }
     static Item battery()             { return get("battery");              }
     static Item sulfur()              { return get("sulfur");               }
     static Item explosives()          { return get("explosives");           }
@@ -79,6 +84,10 @@ struct Item::Named
     static Item petroleum_gas()   { return fluid("petroleum-gas");    }
     static Item sulfuric_acid()   { return fluid("sulfuric-acid");    }
     static Item lubricant()       { return fluid("lubricant");        }
+
+    static Item assembling_machine_1()  { return get("assembling-machine-1"); }
+    static Item assembling_machine_2()  { return get("assembling-machine-2"); }
+    static Item assembling_machine_3()  { return get("assembling-machine-3"); }
 
 
     static Item logistic_chest_storage() {

@@ -6,7 +6,7 @@
 class PR_Fluid_CoalStation
 {
 public:
-    static Blueprint_Book rs_pairs(); // 3 pcs
+    static BluePrint_Book rs_pairs(); // 3 pcs
 
 private:
     static BluePrint rs_pair( Item fluid );

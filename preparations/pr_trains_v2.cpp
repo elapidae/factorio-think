@@ -24,9 +24,9 @@
 static BluePrint rv2_6_wood_chests( Item item );
 static BluePrint rv2_12_wood_chests( Item item );
 template <class> class TD;
-Blueprint_Book PR_Trains_V2::build()
+BluePrint_Book PR_Trains_V2::build()
 {
-    Blueprint_Book res;    
+    BluePrint_Book res;    
     res.icons.set( 1, Item::Named::train_stop() );
     res.icons.set( 2, Item::Named::virtual_signal("R") );
     res.icons.set( 3, Item::Named::virtual_signal("S") );
@@ -51,6 +51,8 @@ Blueprint_Book PR_Trains_V2::build()
     res.add( gen_fn(Item::Named::battery())             );
     res.add( gen_fn(Item::Named::explosives())          );
     res.add( gen_fn(Item::Named::electronic_circuit())  );
+    res.add( gen_fn(Item::Named::advanced_circuit())    );
+    res.add( gen_fn(Item::Named::processing_unit())     );
     res.next_line();
 
     // - receive 1L
@@ -67,6 +69,8 @@ Blueprint_Book PR_Trains_V2::build()
     res.add( gen_fn(Item::Named::battery())             );
     res.add( gen_fn(Item::Named::explosives())          );
     res.add( gen_fn(Item::Named::electronic_circuit())  );
+    res.add( gen_fn(Item::Named::advanced_circuit())    );
+    res.add( gen_fn(Item::Named::processing_unit())     );
     res.next_line();
 
     // - receive 2L
@@ -83,6 +87,8 @@ Blueprint_Book PR_Trains_V2::build()
     res.add( gen_fn(Item::Named::battery())             );
     res.add( gen_fn(Item::Named::explosives())          );
     res.add( gen_fn(Item::Named::electronic_circuit())  );
+    res.add( gen_fn(Item::Named::advanced_circuit())    );
+    res.add( gen_fn(Item::Named::processing_unit())     );
     res.next_line();
 
     return res;

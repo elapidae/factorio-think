@@ -17,6 +17,9 @@ namespace names
     static constexpr auto filters = "filters";
 
     static constexpr auto blueprint   = "blueprint";
+    static constexpr auto blueprint_book_build = "blueprint_book";
+    static constexpr auto blueprint_book_label = "blueprint-book";
+
     static constexpr auto deconstruction_planner = "deconstruction_planner";
 
     static constexpr auto entities      = "entities";

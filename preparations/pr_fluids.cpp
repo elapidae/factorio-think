@@ -6,7 +6,7 @@
 #include "names.h"
 
 //=======================================================================================
-Blueprint_Book PR_Fluids::build()
+BluePrint_Book PR_Fluids::build()
 {
     static auto water           = Item::Named::water();
     static auto crude_oil       = Item::Named::crude_oil();
@@ -19,7 +19,7 @@ Blueprint_Book PR_Fluids::build()
     static auto lubricant       = Item::Named::lubricant();
     static auto steam           = Item::Named::steam();
 
-    Blueprint_Book res;
+    BluePrint_Book res;
 
     res.icons.set( 1, Item::Named::water() );
     res.icons.set( 2, Item::Named::lubricant() );

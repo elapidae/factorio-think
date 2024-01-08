@@ -6,7 +6,7 @@
 class PR_Trains_V2
 {
 public:
-    static Blueprint_Book build();
+    static BluePrint_Book build();
 
     static BluePrint receive_1L_6_wooden_chests( Item item );
 

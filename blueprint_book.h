@@ -13,17 +13,20 @@ constexpr static auto n_version_val2 = 0x10001005b0000;
 
 //=======================================================================================
 
-class Blueprint_Book
+class BluePrint_Book
 {
 public:
-    static Blueprint_Book do_import( const QByteArray& arr );
+    static BluePrint_Book do_import( const QByteArray& arr );
+    static BluePrint_Book from_object( QJsonObject obj );
 
-    Blueprint_Book( QString label = "", QString description = "" );
+    BluePrint_Book( QString label = "", QString description = "" );
     QJsonObject build() const;
     QJsonObject build_for_export() const;
 
     void add( const BluePrint& bp );
+    void add( const BluePrint_Book& bp );
     void assign( const BluePrint& bp, unsigned idx );
+    void assign( const BluePrint_Book& bp, unsigned idx );
 
     void shift_to( unsigned idx ); // increase cur index to idx pos in line, from 0 to 5.
     void next_line(); // increase cur index to mod 6 == 0
@@ -39,6 +42,7 @@ private:
     QJsonArray blueprints() const;
     std::map<unsigned, BluePrint> blueprints_map;
     std::map<unsigned, Deconstruction_Planner> deconstructions_map;
+    std::map<unsigned, BluePrint_Book> books_map;
     QString label;
     QString description;
 

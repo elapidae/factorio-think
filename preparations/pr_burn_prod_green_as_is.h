@@ -6,7 +6,7 @@
 class PR_Burn_Prod_Green_AS_IS
 {
 public:
-    static Blueprint_Book build();
+    static BluePrint_Book build();
 
     static BluePrint coal_prod( Item from, Item to );
     static QByteArray coal_prod_copper();

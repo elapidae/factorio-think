@@ -17,6 +17,8 @@ public:
 
     void first_signal( Item item );
     QString first_signal_name() const;
+
+    int constant() const;
     void constant( int val );
 };
 //=======================================================================================

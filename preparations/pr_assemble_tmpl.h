@@ -7,7 +7,7 @@
 class PR_Assemble_tmpl
 {
 public:
-    static Blueprint_Book S2_templates();
+    static BluePrint_Book S2_templates();
 
 
 private:

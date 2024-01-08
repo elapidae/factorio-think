@@ -15,15 +15,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+DEFINES += V_GMTIME_SAFE=gmtime_r
+
 SOURCES += \
     blueprint.cpp \
     blueprint_book.cpp \
     bprint_landfill.cpp \
     blueprint_io.cpp \
+    calc_lazy_bastard.cpp \
     clipboard.cpp \
     deconstruction_planner.cpp \
     items/arithmetic_combinator.cpp \
-    items/assembler_machines.cpp \
+    items/assembling_machine.cpp \
     items/constant_combinator.cpp \
     item.cpp \
     items/decider_combinator.cpp \
@@ -31,17 +34,24 @@ SOURCES += \
     items/inserter.cpp \
     items/trains.cpp \
     json.cpp \
+    landfill_from_clipboard.cpp \
     main.cpp \
     mainwindow.cpp \
     make_books.cpp \
     preparations/pr_assemble_tmpl.cpp \
+    preparations/pr_basic_features_st2.cpp \
     preparations/pr_burn_prod_green_as_is.cpp \
+    preparations/pr_chests.cpp \
     preparations/pr_descructors.cpp \
     preparations/pr_fluid_coalstation.cpp \
     preparations/pr_fluids.cpp \
+    preparations/pr_logistic_templates.cpp \
+    preparations/pr_old_templates_as_is.cpp \
     preparations/pr_science_before_rocket.cpp \
+    preparations/pr_science_imported_nb.cpp \
     preparations/pr_trains_v2.cpp \
     preparations/pr_uran.cpp \
+    preparations/pr_war_assemblies.cpp \
     preparations/pr_zero_book_as_is.cpp \
     prototypes.cpp \
     recipe.cpp
@@ -51,10 +61,11 @@ HEADERS += \
     blueprint_book.h \
     bprint_landfill.h \
     blueprint_io.h \
+    calc_lazy_bastard.h \
     clipboard.h \
     deconstruction_planner.h \
     items/arithmetic_combinator.h \
-    items/assembler_machines.h \
+    items/assembling_machine.h \
     items/constant_combinator.h \
     item.h \
     items/decider_combinator.h \
@@ -62,17 +73,24 @@ HEADERS += \
     items/inserter.h \
     items/trains.h \
     json.h \
+    landfill_from_clipboard.h \
     mainwindow.h \
     make_books.h \
     names.h \
     preparations/pr_assemble_tmpl.h \
+    preparations/pr_basic_features_st2.h \
     preparations/pr_burn_prod_green_as_is.h \
+    preparations/pr_chests.h \
     preparations/pr_descructors.h \
     preparations/pr_fluid_coalstation.h \
     preparations/pr_fluids.h \
+    preparations/pr_logistic_templates.h \
+    preparations/pr_old_templates_as_is.h \
     preparations/pr_science_before_rocket.h \
+    preparations/pr_science_imported_nb.h \
     preparations/pr_trains_v2.h \
     preparations/pr_uran.h \
+    preparations/pr_war_assemblies.h \
     preparations/pr_zero_book_as_is.h \
     prototypes.h \
     recipe.h \

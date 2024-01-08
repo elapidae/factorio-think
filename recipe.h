@@ -9,6 +9,10 @@ class Recipe
 public:
     static BluePrint make_assemble_2( QString iname, int amount );
 
+    //  Find all assembling machines and define recipes.
+    static QList<Item> extract_recipies( BluePrint bp );
+    static BluePrint form_in_assembling_machine_2( Item item );
+
     struct Ingredient
     {
         QString name;
@@ -23,7 +27,6 @@ public:
     Ingredient::List ingredients;
     int amount;
 
-private:
-    static QJsonObject bp_gen0();
+private:    
 };
 //=======================================================================================

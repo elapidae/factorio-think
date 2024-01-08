@@ -40,3 +40,44 @@ bool Arithmetic_Combinator::replace_in_out( const Item& src, const Item& dst )
     return true;
 }
 //=======================================================================================
+/*
+{
+  "connections": {
+    "1": {
+      "green": [
+        {
+          "entity_id": 155
+        }
+      ]
+    },
+    "2": {
+      "green": [
+        {
+          "entity_id": 213
+        }
+      ]
+    }
+  },
+  "control_behavior": {
+    "arithmetic_conditions": {
+      "first_signal": {
+        "name": "iron-ore",
+        "type": "item"
+      },
+      "operation": "/",
+      "output_signal": {
+        "name": "iron-ore",
+        "type": "item"
+      },
+      "second_constant": -12
+    }
+  },
+  "direction": 2,
+  "entity_number": 154,
+  "name": "arithmetic-combinator",
+  "position": {
+    "x": 148,
+    "y": -106.5
+  }
+}
+*/

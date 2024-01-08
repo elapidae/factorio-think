@@ -7,9 +7,9 @@
 #include "qdeb.h"
 
 //=======================================================================================
-Blueprint_Book PR_Burn_Prod_Green_AS_IS::build()
+BluePrint_Book PR_Burn_Prod_Green_AS_IS::build()
 {
-    auto res = Blueprint_Book::do_import( tmpl() );
+    auto res = BluePrint_Book::do_import( tmpl() );
 
     auto iron   = coal_prod( Item::Named::iron_ore(),   Item::Named::iron_plate() );
     auto steel  = coal_prod( Item::Named::iron_plate(), Item::Named::steel_plate() );

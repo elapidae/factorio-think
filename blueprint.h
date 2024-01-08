@@ -12,6 +12,8 @@
 class BluePrint
 {
 public:
+    static void test_positions();
+
     BluePrint() {} // invalid
     static BluePrint do_import( QByteArray raw0 );
     QByteArray do_export() const; // as ready copy-paste bp.
@@ -20,6 +22,7 @@ public:
     QJsonObject build() const;
 
     QList<QJsonValueRef> find( Item item );
+    QList<QJsonValueRef> find_assembling_machines();
 
     //  find & control that has only one item.
     QJsonValueRef find_unique( Item item );

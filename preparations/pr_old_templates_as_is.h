@@ -6,7 +6,7 @@
 class PR_Old_Templates_AS_IS
 {
 public:
-    static Blueprint_Book build();
+    static BluePrint_Book build();
 
     static QByteArray as_is();
 };

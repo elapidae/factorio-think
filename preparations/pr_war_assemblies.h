@@ -8,7 +8,7 @@ class PR_War_Assemblies
 public:
     PR_War_Assemblies();
 
-    static Blueprint_Book build();
+    static BluePrint_Book build();
 };
 
 #endif // PR_WAR_ASSEMBLIES_H
