@@ -100,9 +100,9 @@ int main()
     //clipboard::put( BluePrint_IO::pack(bp_basic_feat2.build_for_export()) );
 
 
-    //auto _ = PR_Basic_Features_St2::templates_for_fabric();
-    //clipboard::put( BluePrint_IO::pack(_.build_for_export()) );
-    BluePrint::test_positions();
+    auto _ = PR_Basic_Features_St2::templates_for_fabric();
+    clipboard::put( BluePrint_IO::pack(_.build_for_export()) );
+    //BluePrint::test_positions();
 
     return 0;
 }

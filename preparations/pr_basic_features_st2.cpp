@@ -74,6 +74,9 @@ BluePrint_Book PR_Basic_Features_St2::templates_for_fabric()
     _ = Recipe::make_assemble_2( "beacon", -1 ); res.add(_); // маяк, hard
     res.next_line();
 
+    _ = Recipe::make_assemble_2( "rocket-silo", -1 ); res.add(_);
+    _ = Recipe::make_assemble_2( "satellite", -2 ); res.add(_);
+
     return res;
 }
 //=======================================================================================
