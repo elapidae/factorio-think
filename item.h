@@ -54,6 +54,9 @@ struct Item::Named
 {
     //----
     static Item virtual_signal( QString name ) { return Item::virtual_signal(name); }
+    static Item vsignal_check() { return virtual_signal("signal-check"); }
+    static Item vsignal_info()  { return virtual_signal("signal-info");  }
+    static Item vsignal_dot()   { return virtual_signal("signal-dot");   }
     //----
     static Item train_stop()    { return get("train-stop");     }
     static Item locomotive()    { return get("locomotive");     }
@@ -88,6 +91,22 @@ struct Item::Named
     static Item assembling_machine_1()  { return get("assembling-machine-1"); }
     static Item assembling_machine_2()  { return get("assembling-machine-2"); }
     static Item assembling_machine_3()  { return get("assembling-machine-3"); }
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    static Item transport_belt()            { return get("transport-belt");   }
+    static Item underground_belt()          { return get("underground-belt"); }
+    static Item splitter()                  { return get("splitter");         }
+    //---------------------------------------
+    static Item fast_transport_belt()       { return get("fast-transport-belt");   }
+    static Item fast_underground_belt()     { return get("fast-underground-belt"); }
+    static Item fast_splitter()             { return get("fast-splitter");         }
+    //---------------------------------------
+    static Item express_transport_belt()    { return get("express-transport-belt");   }
+    static Item express_underground_belt()  { return get("express-underground-belt"); }
+    static Item express_splitter()          { return get("express-splitter");         }
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+    static Item constant_combinator() { return get("constant-combinator"); }
 
 
     static Item logistic_chest_storage() {

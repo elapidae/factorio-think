@@ -99,7 +99,7 @@ auto entities_1_1 = []
     res.insert("transport-belt");
     res.insert("burner-inserter");
     res.insert("wooden-chest");
-    res.insert("");
+    res.insert("long-handed-inserter");
     res.insert("");
     res.insert("");
     res.insert("");

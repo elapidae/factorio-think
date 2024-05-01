@@ -20,8 +20,6 @@ QJsonObject BluePrint_IO::extract( QByteArray _code )
 
     if ( arr.at(0) != '0' ) throw verror;
     arr.remove(0,1);
-//    vdeb << "BluePrint_IO::extract cleared byte array (size" << arr.size() << ") by"
-//         << tm.elapsed().ms();
 
     if ( !arr.fromBase64Encoding(arr) ) throw verror;
 

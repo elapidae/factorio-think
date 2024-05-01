@@ -15,6 +15,8 @@ public:
 
     QJsonArray build() const;
 
+    std::map<int, QJsonObject> raw_map_view() const { return map; };
+
 private:
     std::map<int, QJsonObject> map;
 };

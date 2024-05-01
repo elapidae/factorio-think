@@ -22,7 +22,7 @@ BluePrint PR_Fluid_CoalStation::rs_pair( Item fluid )
 
     res.train_stops_replace( src, fluid );
     res.constant_combinators_replace( src, fluid );
-    res.decider_combinators_replace_first_signal( src, fluid );
+    res.decider_combinators_replace_first_signal_count( src, fluid );
     res.locomotives_init_fuel_coal( 4 );
     res.icons.replace_all( src, fluid );
 

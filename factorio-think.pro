@@ -27,6 +27,7 @@ SOURCES += \
     deconstruction_planner.cpp \
     items/arithmetic_combinator.cpp \
     items/assembling_machine.cpp \
+    items/chests.cpp \
     items/constant_combinator.cpp \
     item.cpp \
     items/decider_combinator.cpp \
@@ -54,7 +55,14 @@ SOURCES += \
     preparations/pr_war_assemblies.cpp \
     preparations/pr_zero_book_as_is.cpp \
     prototypes.cpp \
-    recipe.cpp
+    recipe.cpp \
+    v2-books/burning_factory_tier1.cpp \
+    v2-books/city_blocks.cpp \
+    v2-books/electricity.cpp \
+    v2-books/intermediate_production_l1.cpp \
+    v2-books/mining.cpp \
+    v2-books/assemble/recipe_maker.cpp \
+    v2-books/train_stations.cpp
 
 HEADERS += \
     blueprint.h \
@@ -66,6 +74,7 @@ HEADERS += \
     deconstruction_planner.h \
     items/arithmetic_combinator.h \
     items/assembling_machine.h \
+    items/chests.h \
     items/constant_combinator.h \
     item.h \
     items/decider_combinator.h \
@@ -94,7 +103,18 @@ HEADERS += \
     preparations/pr_zero_book_as_is.h \
     prototypes.h \
     recipe.h \
-    qdeb.h
+    qdeb.h \
+    v2-books/assemble/raw_belts_l3_assemble.h \
+    v2-books/assemble/raw_chests.h \
+    v2-books/assemble/raw_drons.h \
+    v2-books/assemble/raw_engine_heads.h \
+    v2-books/burning_factory_tier1.h \
+    v2-books/city_blocks.h \
+    v2-books/electricity.h \
+    v2-books/intermediate_production_l1.h \
+    v2-books/mining.h \
+    v2-books/assemble/recipe_maker.h \
+    v2-books/train_stations.h
 
 FORMS += \
     mainwindow.ui

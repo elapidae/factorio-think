@@ -45,7 +45,7 @@ void Constant_Combinator::set_behavior( int index, Item item, int count )
 //=======================================================================================
 void Constant_Combinator::normalize_as_info()
 {
-    obj.remove( names::direction );
+    remove_direction();
 
     auto ff = filters();
 
@@ -59,6 +59,11 @@ void Constant_Combinator::normalize_as_info()
     }
 
     filters( ff );
+}
+//=======================================================================================
+void Constant_Combinator::remove_direction()
+{
+    obj.remove( names::direction );
 }
 //=======================================================================================
 void Constant_Combinator::replace_all( Item _src, Item _dst )
@@ -83,10 +88,26 @@ void Constant_Combinator::save_recipe( Recipe recipe )
     clear_behavior();
 
     int idx = 1;
-    for ( auto && ing : recipe.ingredients ) {
-        auto item = Item::get( ing.name );
+    for ( auto && ing : recipe.ingredients )
+    {
+        Item item;
+        if ( ing.name == "lubricant" )
+        {
+            item.name = "lubricant";
+            item.type = "fluid";
+        }
+        else
+        {
+            item = Item::get( ing.name );
+        }
         set_behavior( idx++, item, ing.amount );
     }
+}
+//=======================================================================================
+bool Constant_Combinator::contains( Item item ) const
+{
+    (void)item;
+    throw verror;
 }
 //=======================================================================================
 

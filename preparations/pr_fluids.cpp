@@ -88,7 +88,7 @@ BluePrint PR_Fluids::send( Item item )
     res.set_burner_inserters_stack_size_1();
 
     // - correct decider combinator;
-    res.decider_combinators_replace_first_signal( oil, item );
+    res.decider_combinators_replace_first_signal_count( oil, item );
 
     // - correct constant combinators;
     res.constant_combinators_replace( oil, item );
@@ -129,7 +129,7 @@ BluePrint PR_Fluids::receive( Item item )
     res.set_burner_inserters_stack_size_1();
 
     // - correct decider combinator;
-    res.decider_combinators_replace_first_signal( oil, item );
+    res.decider_combinators_replace_first_signal_count( oil, item );
 
     // - correct constant combinators;
     res.constant_combinators_replace( oil, item );

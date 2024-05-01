@@ -17,6 +17,8 @@ public:
     BluePrint() {} // invalid
     static BluePrint do_import( QByteArray raw0 );
     QByteArray do_export() const; // as ready copy-paste bp.
+    QByteArray do_export_landfill() const; // as ready copy-paste bp.
+
 
     explicit BluePrint( QJsonObject bp );
     QJsonObject build() const;
@@ -33,7 +35,8 @@ public:
     void arithmetic_combinators_replace_in_out( Item src, Item dst );
 
     void constant_combinators_replace( Item src, Item dst );
-    void decider_combinators_replace_first_signal( const Item& src, const Item& dst );
+    void decider_combinators_replace_first_signal_count( const Item& src,
+                                                   const Item& dst, int count = -1 );
 
     void locomotives_init_fuel_coal( int count );
     void locomotives_init_fuel_nuclear( int count );

@@ -8,6 +8,8 @@
 #include "items/arithmetic_combinator.h"
 #include "qdeb.h"
 #include "names.h"
+#include "bprint_landfill.h"
+
 
 //=======================================================================================
 auto test_pos = R"(
@@ -25,9 +27,8 @@ void BluePrint::test_positions()
 BluePrint BluePrint::do_import( QByteArray raw0 )
 {
     auto bp = BluePrint_IO::extract( raw0 );
-    //qdeb << bp;
-    //exit(1);
-    return BluePrint( bp[names::blueprint].toObject() );
+    bp = BPrint_Landfill::correct_blueprint_landfill( bp );
+    return BluePrint( bp );
 }
 //=======================================================================================
 QByteArray BluePrint::do_export() const
@@ -37,11 +38,25 @@ QByteArray BluePrint::do_export() const
     return BluePrint_IO::pack( res );
 }
 //=======================================================================================
+QByteArray BluePrint::do_export_landfill() const
+{
+    QJsonObject res;
+    res[names::blueprint] = build();
+    res = BPrint_Landfill::correct_landfill( res );
+    return BluePrint_IO::pack( res );
+}
+//=======================================================================================
 
 
 //=======================================================================================
 BluePrint::BluePrint( QJsonObject bp )
 {
+    //-----------------------------------------------------------------------------------
+    auto keys = bp.keys();
+    if ( keys.size() == 1 && keys.at(0) == names::blueprint )
+    {
+        bp = bp[names::blueprint].toObject();
+    }
     //-----------------------------------------------------------------------------------
     if ( bp.take(names::item).toString() != names::blueprint )
         throw verror << "item != blueprint";
@@ -154,15 +169,15 @@ void BluePrint::constant_combinators_replace( Item src, Item dst )
     }
 }
 //=======================================================================================
-void BluePrint::decider_combinators_replace_first_signal
-                                ( const Item& src, const Item& dst )
+void BluePrint::decider_combinators_replace_first_signal_count
+                    ( const Item& src, const Item& dst, int count )
 {
     auto list = find( Item::get(names::decider_combinator) );
     for ( auto ref: list )
     {
         Decider_Combinator2 dc( ref );
-        dc.replace_first_signal( src, dst );
-    }
+        dc.replace_first_signal_count( src, dst, count );
+   }
 }
 //=======================================================================================
 void BluePrint::locomotives_init_fuel_coal( int count )

@@ -24,9 +24,13 @@ public:
     // - remove direction;
     void normalize_as_info();
 
+    void remove_direction();
+
     void replace_all( Item src, Item dst );
 
     void save_recipe( Recipe recipe );
+
+    bool contains( Item item ) const;
 
 private:
     QJsonArray filters() const;

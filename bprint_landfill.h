@@ -7,6 +7,7 @@
 
 #include "vlog.h"
 
+//=======================================================================================
 class BPrint_Landfill
 {
 public:
@@ -17,3 +18,4 @@ public:
     // result to new object with key 'blueprint'
     static QJsonObject correct_blueprint_landfill( QJsonObject src );
 };
+//=======================================================================================

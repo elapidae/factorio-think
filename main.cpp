@@ -36,9 +36,35 @@
 #include "preparations/pr_chests.h"
 #include "preparations/pr_basic_features_st2.h"
 
+#include "v2-books/train_stations.h"
+#include "v2-books/burning_factory_tier1.h"
+#include "v2-books/city_blocks.h"
+#include "v2-books/assemble/recipe_maker.h"
+
 //=======================================================================================
-int main()
+int main(int c, char **v)
 {
+    QApplication app(c, v);
+
+    //auto book = Train_Stations::R_solid_intermediate_stops();
+    //auto book = Train_Stations::S_solid_intermediate_stops();
+    //auto book = Burning_Factory_tier1::tier1();
+    //auto book = Train_Stations::RS_fluid_intermediate_stops();
+    //auto book = Recipe_Maker::Belt_templates();
+    //auto book = Recipe_Maker::Engine_templates();
+    //auto book = Recipe_Maker::Chest_templates();
+    auto book = Recipe_Maker::Equipment_templates();
+
+    auto res1 = BluePrint_IO::pack( book.build_for_export() );
+    clipboard::put( res1 );
+    return 0;
+
+    //auto B_rails = City_Blocks::B_rails_one_side_directions();
+    //auto M_rails  = City_Blocks::M_rails_between_lines();
+    auto rails = City_Blocks::O_rails_for_endpoints();
+    clipboard::put( rails.do_export() );
+    return 0;
+
     //PR_War_Assemblies a;
     //return 0;
     //Calc_Lazy_Bastard();
