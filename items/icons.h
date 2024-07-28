@@ -10,6 +10,7 @@ class Icons
 public:
     void load_raw( QJsonArray arr );
     void set( int idx, Item item );
+    void clear();
 
     void replace_all( Item src, Item dst );
 

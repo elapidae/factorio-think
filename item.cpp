@@ -32,6 +32,11 @@ static auto & load()
 }
 Item Item::get( QString name )
 {
+    if ( name.startsWith("signal-") )
+    {
+        name.replace( "signal-", "" );
+        return Item::virtual_signal( name );
+    }
     if ( !load().keys().contains(name) )
         throw verror << name;
 

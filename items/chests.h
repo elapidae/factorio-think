@@ -1,7 +1,8 @@
 #pragma once
 
-#include "item.h"
 #include <QJsonObject>
+#include "qdeb.h"
+#include "item.h"
 
 //=======================================================================================
 class Chests
@@ -36,6 +37,7 @@ public:
     { return Item::get("logistic-chest-requester"); }
 
     class Storage;
+    class Requester;
 };
 //=======================================================================================
 class Chests::Storage
@@ -44,5 +46,17 @@ public:
     QJsonValueRef ref;
 
     void filter( Item item );
+};
+//=======================================================================================
+class Chests::Requester
+{
+public:
+    QJsonValueRef ref;
+
+    void request( int pos, Item it, int count )
+    {
+        (void)pos; (void)count; (void)it;
+        qdeb << ref;
+    }
 };
 //=======================================================================================

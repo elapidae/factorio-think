@@ -21,6 +21,30 @@ QString Decider_Combinator::first_signal_name() const
     return fs["name"].toString();
 }
 //=======================================================================================
+void Decider_Combinator::output_signal( Item item )
+{
+    auto val = item.item_name_obj();
+    auto key0 = names::control_behavior;
+    auto key1 = names::decider_conditions;
+    auto key2 = names::output_signal;
+    Json::find_set( &obj, val, key0, key1, key2 );
+}
+//=======================================================================================
+QString Decider_Combinator::output_signal_name() const
+{
+    auto cb = Json::get_obj( obj, names::control_behavior );
+    auto dc = Json::get_obj( cb, names::decider_conditions );
+    auto os = Json::get_obj( dc, names::output_signal );
+    return os["name"].toString();
+}
+//=======================================================================================
+bool Decider_Combinator::copy_count_from_input() const
+{
+    auto cb = Json::get_obj( obj, names::control_behavior );
+    auto dc = Json::get_obj( cb, names::decider_conditions );
+    return dc["copy_count_from_input"].toBool();
+}
+//=======================================================================================
 int Decider_Combinator::constant() const
 {
     return obj

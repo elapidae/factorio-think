@@ -117,6 +117,11 @@ void BluePrint_Book::assign( const BluePrint_Book& bp, unsigned idx )
     cur_idx = std::max( cur_idx, idx + 1 );
 }
 //=======================================================================================
+void BluePrint_Book::inc_pos()
+{
+    ++cur_idx;
+}
+//=======================================================================================
 void BluePrint_Book::shift_to( unsigned idx )
 {
     if ( idx > 5 ) throw verror;

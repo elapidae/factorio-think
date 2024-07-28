@@ -54,6 +54,7 @@ QJsonObject BluePrint_IO::extract( QByteArray _code )
 
     return json.object();
 }
+
 //=======================================================================================
 QByteArray BluePrint_IO::pack( QJsonObject obj )
 {

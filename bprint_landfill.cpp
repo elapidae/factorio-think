@@ -5,14 +5,16 @@
 #include <QSet>
 #include <cmath>
 #include <QFile>
-
+#include "qdeb.h"
 
 //=======================================================================================
 static auto constexpr blueprint_n = "blueprint";
 QJsonObject BPrint_Landfill::correct_blueprint_landfill( QJsonObject src )
 {
     auto _bp_o = src[blueprint_n];
-    if (!_bp_o.isObject()) throw verror;
+    if ( !_bp_o.isObject() )
+        throw verror;
+
     auto o = _bp_o.toObject();
 
     auto corrected = BPrint_Landfill::correct_landfill(o);
@@ -100,6 +102,12 @@ auto entities_1_1 = []
     res.insert("burner-inserter");
     res.insert("wooden-chest");
     res.insert("long-handed-inserter");
+    res.insert("fast-transport-belt");
+    res.insert("fast-underground-belt");
+    res.insert("small-electric-pole");
+    res.insert("steel-chest");
+    res.insert("express-transport-belt");
+    res.insert("express-underground-belt");
     res.insert("");
     res.insert("");
     res.insert("");
@@ -114,6 +122,8 @@ auto entities_2_2 = []
     res.insert("train-stop");
     res.insert("substation");
     res.insert("steel-furnace");
+    res.insert("accumulator");
+    res.insert("power-switch");
     res.insert("");
     res.insert("");
     return res;
@@ -125,10 +135,15 @@ auto entities_3_3 = []
     res.insert(radar_n);
     res.insert(assembling_machine_2_n);
     res.insert("storage-tank");
+    res.insert("assembling-machine-1");
+    res.insert("assembling-machine-2");
     res.insert("assembling-machine-3");
     res.insert("artillery-turret");
-    res.insert("");
-    res.insert("");
+    res.insert("electric-furnace");
+    res.insert("solar-panel");
+    res.insert("lab");
+    res.insert("chemical-plant");
+    res.insert("beacon");
     res.insert("");
     return res;
 }();
@@ -145,6 +160,7 @@ std::vector<QPoint> square_of(const QString& name, const QPoint& pos)
     if (name == roboport_n)                 return square_of_coord(pos, 4, 4);
 
     if (name == "nuclear-reactor")          return square_of_coord(pos, 5, 5);
+    if (name == "oil-refinery")             return square_of_coord(pos, 5, 5);
 
 
     if (name == straight_rail_n) { vwarning << name; return {}; }
@@ -340,18 +356,23 @@ std::vector<QPoint> land_of(const QJsonObject& obj)
     if (name == flamethrower_turret_n)
         return land_of_flamethrower_turret(obj, pos);
 
-    if (name == heat_exchanger_n)
+    if (name == heat_exchanger_n || name == "boiler")
         return land_of_heat_exchanger(obj, pos);
 
     if (name == "pump" ||
         name == "arithmetic-combinator" ||
-        name == "splitter" ||
         name == "decider-combinator")
     {
         return land_of_direction(obj, pos, 2, 1);
     }
+    if (name == "splitter" ||
+        name == "fast-splitter" ||
+        name == "express-splitter")
+    {
+        return land_of_direction(obj, pos, 1, 2);
+    }
 
-    if (name == "steam-turbine")
+    if ( name == "steam-turbine" || name == "steam-engine" )
     {
         return land_of_direction(obj, pos, 5, 3);
     }

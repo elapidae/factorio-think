@@ -1,15 +1,15 @@
 #pragma once
 
-#include "blueprint_io.h"
-#include "blueprint_book.h"
+#include "json.h"
 
 //=======================================================================================
-class Burning_Factory_tier1
+class Entity
 {
 public:
-    static BluePrint burning_L2_24pcs();
-    static BluePrint burning_L1_24pcs();
+    Entity( QJsonValueRef ref );
 
-    static BluePrint_Book tier1();
+    void shift( int x, int y );
+
+    QJsonValueRef ref;
 };
 //=======================================================================================

@@ -3,6 +3,7 @@
 #include "vlog.h"
 #include "names.h"
 #include "json.h"
+#include "control_behavior.h"
 
 //=======================================================================================
 QJsonArray Constant_Combinator::filters() const
@@ -41,6 +42,16 @@ void Constant_Combinator::set_behavior( int index, Item item, int count )
     f[index-1] = dst;
 
     filters( f );
+}
+//=======================================================================================
+Item Constant_Combinator::get_item( int index )
+{
+    auto cb = obj[names::control_behavior].toObject();
+    auto f = cb[names::filters].toArray();
+    auto field = f.at(index).toObject();
+    auto signal = field["signal"].toObject();
+
+    return Item::get( signal["name"].toString() );
 }
 //=======================================================================================
 void Constant_Combinator::normalize_as_info()
@@ -106,8 +117,66 @@ void Constant_Combinator::save_recipe( Recipe recipe )
 //=======================================================================================
 bool Constant_Combinator::contains( Item item ) const
 {
-    (void)item;
-    throw verror;
+    auto fs = filters();
+    for ( auto f: fs )
+    {
+        auto sig = f.toObject()["signal"].toObject();
+        if ( sig["name"] == item.name )
+            return true;
+    }
+    return false;
+}
+//=======================================================================================
+
+
+//=======================================================================================
+Constant_CombinatorRef::Constant_CombinatorRef(QJsonValueRef ref)
+    : ref( ref )
+{}
+//=======================================================================================
+Constant_CombinatorRef
+Constant_CombinatorRef::find( QList<QJsonValueRef> where, Item what )
+{
+    for ( auto ref: where )
+    {
+        Constant_CombinatorRef cc( ref );
+        if ( cc.contains(what) ) return cc;
+    }
+    throw verror << "not found";
+}
+//=======================================================================================
+void Constant_CombinatorRef::clear_behavior()
+{
+    Constant_Combinator cc{ ref.toObject() };
+    cc.clear_behavior();
+    ref = cc.obj;
+}
+//=======================================================================================
+void Constant_CombinatorRef::replace_all( Item src, Item dst )
+{
+    Constant_Combinator cc{ ref.toObject() };
+    cc.replace_all( src, dst );
+    ref = cc.obj;
+}
+//=======================================================================================
+void Constant_CombinatorRef::save_recipe( Recipe recipe )
+{
+    Constant_Combinator cc{ ref.toObject() };
+    cc.save_recipe( recipe );
+    ref = cc.obj;
+}
+//=======================================================================================
+bool Constant_CombinatorRef::contains( Item item ) const
+{
+    Constant_Combinator cc{ ref.toObject() };
+    return cc.contains( item );
+}
+//=======================================================================================
+void Constant_CombinatorRef::set_behavior( int index, Item item, int count )
+{
+    Constant_Combinator cc{ ref.toObject() };
+    cc.set_behavior( index, item, count );
+    ref = cc.obj;
 }
 //=======================================================================================
 
@@ -176,3 +245,4 @@ bool Constant_Combinator::contains( Item item ) const
   }
 }
 */ // -------------------
+

@@ -8,6 +8,7 @@ namespace names
     static constexpr auto decider_combinator    = "decider-combinator";
     static constexpr auto constant_combinator   = "constant-combinator";
 
+    static constexpr auto circuit_condition = "circuit_condition";
     static constexpr auto control_behavior = "control_behavior";
     static constexpr auto arithmetic_conditions = "arithmetic_conditions";
     static constexpr auto decider_conditions = "decider_conditions";

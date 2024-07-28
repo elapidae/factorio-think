@@ -4,65 +4,69 @@
 #include "bprint_landfill.h"
 #include "qdeb.h"
 
+#include "raw_city_blocks.h"
+
 //=======================================================================================
-static auto A_rails_bp = R"(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)";
 BluePrint City_Blocks::A_rails()
 {
-    auto obj = BluePrint_IO::extract( A_rails_bp );
-    obj = BPrint_Landfill::correct_blueprint_landfill( obj );
-    return BluePrint( obj );
+    return BluePrint::do_import( raw_A_rails_bp );
 }
 //=======================================================================================
-static auto B_rails = R"(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)";
 BluePrint City_Blocks::B_rails_one_side_directions()
 {
-    auto obj = BluePrint_IO::extract( B_rails );
-    obj = BPrint_Landfill::correct_blueprint_landfill( obj );
-    return BluePrint( obj );
+    return BluePrint::do_import( raw_B_rails );
 }
 //=======================================================================================
-static auto M_rails = R"(0eNqdmt1O20AQhd9lr51od/Y/79AnqFAVgkUtgUGOg4pQ3r0JBhqicXNOLqH1yaw/fw6amTdz+7Brn4euH83qzXSbp35rVj/fzLa779cPx9+Nr8+tWZlubB9NY/r14/GnYd09mH1juv6u/WNWbt8ol7x0w7g7/Obrqul/LH6cXCn7m8a0/diNXTt98vsPr7/63eNtOxyi/109Hj71/ve4eP/wxjw/bQ9XPfXHTzzWEGNjXo+1HIs5S5FvlS82v9ddv/goWEnyyylLllFL819pm93w0t7NVpTeU9LhuHfd0G6mfwtKYmBP6bW6InfKdHLKixUm7MxegnbmqCRmplovF5gU9A56+c8drFxN1B10loWsHtQ59qR6jLDVZDXGs9XoMbQAVY2JeEz9iLn4nDrw0XdJpheQfM/MWmYGdXJFzRQtk1DAaYf3Wmhl+apghH72nf4ed9QrLsXlZ9q5ododFOprwrvApdOqzNwD2hWnvuskks91+H7GpGUmuLaUP2u7fOcynlrxVNgXlx2eWvFUD6d63J8c8VT8j6uM0/L4N0vGaXnYHldwWh53qRC08K+hQtDC3SoELdytQtDC3aoELdytitMKuFsVpxVwtypOK+BuVZxWgN0Si9MKAU8laEU8laCV8FSCVsZTCVqwW+IIWhVPxWlFi6fitKLDU3FaUfBUnFbE3RKcVsTdEoIW7pYQtHC3hKCFuyUELdwtT9DC3fI4rYS75XFaCXfL47QS7pbHaSXcrYDTSrhbgaCFuxUIWrhbgaCFuxUIWrhbkaCFuxVxWhl3K+K0Mu5WxGll3K2I08q4WwmnlXG3EkELdysRtHC3iF5Gxt0iehkZd4voZWTcLaKXUXC3iF5Gwd0iehkFd4voZRTcLaKXUXC3iF5Gwd0iehkFd4voZRTcLaKXUXC3iF5Gwd0iehkVd4voZVTcLaKXUXG3iF5GxbvsRC+jBjyVoBXxVIJWwlMJWhlPJWjhMyuil1HxoRXRy3DWkkO7AMzXLD7OJTokzgoem4lYfoalzp6c5YdY+hjb0iNfl4H5rE1XDhrD+SgwqfH5ykkjGE+Pgs9vilNj6WHwDDRnuQ0asUB1jl8V0ncRTlYjoF2XQ3VqDO/KTD28K/p2BL4e8VXRTFBiKxKnB2W2ormgcuWGl1/OPKKVPqL+pjtZfeC2sjy0VMRtRJysUc0dXIRGMnNwf+UylXLwm2ZaQFyd7Cs25qUdttN3VXEhV8klVett2O//AmVpVi0=)";
 BluePrint City_Blocks::M_rails_between_lines()
 {
-    auto obj = BluePrint_IO::extract( M_rails );
-    obj = BPrint_Landfill::correct_blueprint_landfill( obj );
-    return BluePrint( obj );
+    return BluePrint::do_import( raw_M_rails );
 }
 //=======================================================================================
-static auto O_rails_for_endpoints_bp = R"(0eNqdmGtu4jAUhffi30kVP/PYRBcwqqoAFrUEBgUHDaqy9yaEdiC9THzyCwXw53vs+zjKJ1vtWntsnA+s+mQnXx/TcEi3jdsMz39ZJUXCLsNHl7B6dTrs2mDT4X9H57esCk1rE+bWB39i1Z+e4La+3g1rw+VoWcVcsHuWMF/vh6emdjvWk5zf2B7Ou4RYcnZNaPtvflaN/0hf71aK7i1h1gcXnB13vj5c3n27X9mmR/9bHfpdtx8hvW6esOPh1K86+JtAfdWX5t0QywQiYiEi/w9FPshP1x+18+lN9S+SfLkFpF80BVOgLhKifyDrtjnbzROEGRHD1W9cY9fjT4oAGkSiuZc4i87jYhV0sJogFkiwQs9cSInmCEnhGRRUAR0hR4tBkiHC1UBjJBgMJykKDYbGaCwYGmJiIeUNMpuiPDLr+did1SMxp4hFZB1lFFFQxPjMl5RuSTXcDLxW8kIEmO9kngqBVCT/bmpyWpDU0QkJyqQjBGcB2XiEhjLNPIozFNFAmWYisiIHj4tWWmDHRTuCEqv1cr4yZbYo0cw00ai7kBys0Um8nGKic4A2ReAYKEmIQowMFxHiNGQ3eiQFMeAJ0eJycDaRvVAWaEelMSUYDNmxFNzeaQxf4qj5M0ctQGk0RS6xwDzKvynU7DwJEbL9IosIzEDVMkVSzkfli9z50BZJzcUiX81N1L2Aw0DIef06g+axMPMDRnNoIE+RlIHRApwrU+nUmNdQCfHvqxc6xnJptQxe/B6zb8n4VqO6e3mSsLNtTuPuBVd5KfLClJnMVNd9AfdQtSE=)";
 BluePrint City_Blocks::O_rails_for_endpoints()
 {
-    auto obj = BluePrint_IO::extract( O_rails_for_endpoints_bp );
-    obj = BPrint_Landfill::correct_blueprint_landfill( obj );
-    return BluePrint( obj );
+    return BluePrint::do_import( raw_O_rails_for_endpoints_bp );
 }
 //=======================================================================================
-static auto nine_dronstations = R"(0eNqdnN1uo0gQRt+FaxjRP+Wm/CqjaGUnTBaJ2BbG0UYjv/
-tgG5Js3Ez6cDXy6KPcVJ8qqj+j/M627ak+dM2uz9a/s+Nucyj6ffHcNU+Xz/
-9la13l2dvln3OebbbHfXvq6+KiOzS752zdd6c6zw77Y9M3+13R1e2mb17rL0F8dQ1iZAjSPO53x2z9c/i25nm3aS+S/
-u1QZ+us6euXLM92m5fLp26/3R/2XZ9dLto91UMcc84jl702XX8a/
-uf9ypui0E9X2vNDntW7flhmffv264e3f3anl23dDaHfr243x7or+lPX1X32cW/
-jrRTueivl+bKULzHse4xt81zUbf3Yd81jcdi3dSSQGQMNF9XN87/b/am7rMznxj9Egrv7xNzFtLc0x9bmydqsi6/
-N5hJbmpDYPszdd8hNNPwq4c6lnL/1QJYXZrZFco2trUrERv+CjZL1qcTXNyRvFVugKROyp9V89sxHZXSbp00XI/
-nHbVH2h0QjfNTF8WXTtkW7eTnEwBjDmJkw7ruFqP9mIX5BgVp/XwUmRFO9pA7uw0tuy2j41QJO7sNrbl00fFiQHF99DT/
-k2AxfUUW/okruYV6jG6gLulhkjWEmxbZcsIOR+HLNgc1ttGdYk97Q4nmwdkFLu1/
-ncLtxFqxbgFokD6tLElw81T69L80kQZLaSlGOTcFrvCvYFWtPs3FCUhyV7+JUCwox2AjkzkYzrwsgv48/wOOij2tXLoAnEt/
-lLlo+Do5qw+gai7JkWLtOwf9fZZW7+LiWPq9piC5wycR2v8DhPme2acnTKpIAHRKQu+gD0YHJbSYJS2a3SBJkjiU4v82wtGSCi6yy
-nMmjBzNcPI8+fYjTKt6WPJziNMzESR/
-jbksZDm59046ntq+r9ldhYc6f9nH39Ktp2+zy3XF5idQqTL5KlDu2dIeW7saBnqgtUjukTk6iW5LEAXokr5hcE+WW7ahFO2rRjlq0
-oxbt6Bgbyj2S+8DkFZIHlsbA8pjMumWsW8a6ZaxbxrphrBvEukGsG8S6QawbxrphrBvGumGsm+nwROSBZT2wtCeXhmGlYVhpGFYaB
-pVGiSqjJIVRkrooSVmUiMQSgVgiDm9qQRlJxapEVJUIqhIxxdon6p6oeaLeydoV61asWRkECes9rPWwzsMaD5sn0TiJpkk0TLL5jY
-1vFkFiESRsdmOjG5vc2ODGjpHoFIkOkegM6RAkDkHiECQOQcIOs+wsy46y7CRrYSthvQSWPKx5WJiwMln5WFQ/
-lmFuGeeWwWgZjX6FEjPKS6ROPVZNco/kqWmf5BWSB5aY1HPSKE/dVL9imxrYpga0qYE8Lqafvx2TeyRPRiAwBAJ6xEw/
-obHMJBMTGDFhCTGpT6XxRa9kwCoEWIUAq8hAMqo9u89kYCoGTIWGklGeTEDFCKiWEJA6mHhlwCgCRhEwioBRBowyYJQBowwYZcAoA
-0YZMIqAEWavCfLXBBlsghw2YRabMI9NmMkmzGUTZrMJ89mEGW3CnDZhVpsgr02Q2SbIbRNmtwnz24QZbsIcN2GWmzDPTZjpJsx1C6
-zDBNRhAusCgXWBwOo0sDoNrJICqqTAaA+M9sB4DIxHZe6KIndFmf+hzP9Q5n8o8j8UGYiKHERFb6Eo80rULUliaj9S5t0pewtF2St
-Ril6JGtUstkVqx2JDuUfy1G40ySskDyyNgeUxmXX22tokZ5lRlplk1oWxLoh1QawLYl0Q68JYF8a6MNaFsS5ozpxeB2dZDyztyaUh
-rDSElYaw0hBWGsy/V+Tfj2oW2yJ1Mo7MvZ/kLIvC8pLMF3PvJznLTDJf7LcBRb8NKPptYFRbpE4Ghnn9yrz+US4sL8nAMPNemXk/
-yVMzw7x+RV6/Iq9fkdevzOtX5vUr8/qVef3KvH5lXr8yr1+Z16/M61fk9Svy+hV5/cq8fmVevzKvX5nXr8zrV+b1K/P69W9e/0N+
-+wMQ609/kyLPXuvueA1gK+OD2lCttHSlP5//ACaBOt0=)";
+BluePrint City_Blocks::assemble_block()
+{
+    return BluePrint::do_import( raw_assemble_block );
+}
+//=======================================================================================
+BluePrint City_Blocks::city_assemblies()
+{
+    return BluePrint::do_import( raw_city_assemblies );
+}
+//=======================================================================================
 BluePrint City_Blocks::Nine_dronstations()
 {
-    return BluePrint::do_import( nine_dronstations );
+    return BluePrint::do_import( raw_nine_dronstations );
+}
+//=======================================================================================
+BluePrint City_Blocks::Nine_dronstations_with_intermediate_blocks()
+{
+    return BluePrint::do_import( raw_nine_dronstations_with_intermediate_blocks );
+}
+//=======================================================================================
+BluePrint_Book City_Blocks::book()
+{
+    BluePrint_Book res;
+    res.icons.set( 1, Item::virtual_signal("C") );
+    res.icons.set( 2, Item::virtual_signal("I") );
+    res.icons.set( 3, Item::virtual_signal("T") );
+    res.icons.set( 4, Item::virtual_signal("Y") );
+
+    res.add( Nine_dronstations() );
+    res.add( Nine_dronstations_with_intermediate_blocks() );
+    res.next_line();
+    res.add( A_rails() );
+    res.add( B_rails_one_side_directions() );
+    res.add( M_rails_between_lines() );
+    res.add( O_rails_for_endpoints() );
+    res.next_line();
+
+    res.add( assemble_block() );
+    res.add( city_assemblies() );
+
+    return res;
 }
 //=======================================================================================

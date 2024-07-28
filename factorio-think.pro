@@ -25,11 +25,13 @@ SOURCES += \
     calc_lazy_bastard.cpp \
     clipboard.cpp \
     deconstruction_planner.cpp \
+    entity.cpp \
     items/arithmetic_combinator.cpp \
     items/assembling_machine.cpp \
     items/chests.cpp \
     items/constant_combinator.cpp \
     item.cpp \
+    items/control_behavior.cpp \
     items/decider_combinator.cpp \
     items/icons.cpp \
     items/inserter.cpp \
@@ -38,7 +40,6 @@ SOURCES += \
     landfill_from_clipboard.cpp \
     main.cpp \
     mainwindow.cpp \
-    make_books.cpp \
     preparations/pr_assemble_tmpl.cpp \
     preparations/pr_basic_features_st2.cpp \
     preparations/pr_burn_prod_green_as_is.cpp \
@@ -56,13 +57,18 @@ SOURCES += \
     preparations/pr_zero_book_as_is.cpp \
     prototypes.cpp \
     recipe.cpp \
-    v2-books/burning_factory_tier1.cpp \
+    v2-books/assemblies_before_drons.cpp \
     v2-books/city_blocks.cpp \
     v2-books/electricity.cpp \
+    v2-books/furnaces.cpp \
     v2-books/intermediate_production_l1.cpp \
     v2-books/mining.cpp \
     v2-books/assemble/recipe_maker.cpp \
-    v2-books/train_stations.cpp
+    v2-books/oil_refinery.cpp \
+    v2-books/science.cpp \
+    v2-books/tier0.cpp \
+    v2-books/train_stations.cpp \
+    v2-books/warehouse.cpp
 
 HEADERS += \
     blueprint.h \
@@ -72,11 +78,13 @@ HEADERS += \
     calc_lazy_bastard.h \
     clipboard.h \
     deconstruction_planner.h \
+    entity.h \
     items/arithmetic_combinator.h \
     items/assembling_machine.h \
     items/chests.h \
     items/constant_combinator.h \
     item.h \
+    items/control_behavior.h \
     items/decider_combinator.h \
     items/icons.h \
     items/inserter.h \
@@ -84,7 +92,6 @@ HEADERS += \
     json.h \
     landfill_from_clipboard.h \
     mainwindow.h \
-    make_books.h \
     names.h \
     preparations/pr_assemble_tmpl.h \
     preparations/pr_basic_features_st2.h \
@@ -104,17 +111,37 @@ HEADERS += \
     prototypes.h \
     recipe.h \
     qdeb.h \
+    v2-books/assemble/raw_assembling_machines.h \
     v2-books/assemble/raw_belts_l3_assemble.h \
     v2-books/assemble/raw_chests.h \
     v2-books/assemble/raw_drons.h \
     v2-books/assemble/raw_engine_heads.h \
-    v2-books/burning_factory_tier1.h \
+    v2-books/assemble/raw_equipment.h \
+    v2-books/assemble/raw_logistics.h \
+    v2-books/assemble/raw_manipulators.h \
+    v2-books/assemble/raw_poles.h \
+    v2-books/assemble/raw_six_advanced_circuits.h \
+    v2-books/assemblies_before_drons.h \
     v2-books/city_blocks.h \
     v2-books/electricity.h \
+    v2-books/furnaces.h \
     v2-books/intermediate_production_l1.h \
     v2-books/mining.h \
     v2-books/assemble/recipe_maker.h \
-    v2-books/train_stations.h
+    v2-books/oil_refinery.h \
+    v2-books/raw_city_blocks.h \
+    v2-books/raw_electricity.h \
+    v2-books/raw_furnances.h \
+    v2-books/raw_oil.h \
+    v2-books/raw_oil_refinery.h \
+    v2-books/raw_science.h \
+    v2-books/raw_tier0.h \
+    v2-books/raw_train_stations.h \
+    v2-books/raw_warehouse.h \
+    v2-books/science.h \
+    v2-books/tier0.h \
+    v2-books/train_stations.h \
+    v2-books/warehouse.h
 
 FORMS += \
     mainwindow.ui

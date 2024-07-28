@@ -89,6 +89,7 @@ BluePrint_Book PR_Basic_Features_St2::recipies_for_arch()
         cout << "    _ = Recipe::make_assemble_2( \"" << r.name << "\", -1 ); res.add(_);\n";
     }
     //exit(00);
+    throw;
 }
 //=======================================================================================
 QByteArray PR_Basic_Features_St2::raw_template_for_recipes()

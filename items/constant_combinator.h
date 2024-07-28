@@ -4,12 +4,16 @@
 #include <QJsonArray>
 #include "item.h"
 #include "recipe.h"
+#include "vlog.h"
 
 //=======================================================================================
 class Constant_Combinator
 {
 public:
-    static constexpr auto json_name = "constant-combinator";
+    static constexpr auto name = "constant-combinator";
+    static auto get() { return Item::get("constant-combinator"); }
+
+
 
     QJsonObject obj;
 
@@ -18,36 +22,37 @@ public:
     // index from 1!
     void set_behavior( int index, Item item, int count );
 
-    //  NB! Maybe vad idea!
+    Item get_item( int index );
+
+    //  NB! Maybe bad idea!
     // - set all values to zero;
     // - move to the beginning;
     // - remove direction;
     void normalize_as_info();
 
     void remove_direction();
-
     void replace_all( Item src, Item dst );
-
     void save_recipe( Recipe recipe );
-
     bool contains( Item item ) const;
 
-private:
+//private:
     QJsonArray filters() const;
     void filters( QJsonArray );
 };
 //=======================================================================================
-class Constant_Combinator2
+class Constant_CombinatorRef
 {
 public:
-    Constant_Combinator2( QJsonValueRef ref ) : ref( ref ) {}
+    Constant_CombinatorRef( QJsonValueRef ref );
 
-    void replace( Item src, Item dst )
-    {
-        Constant_Combinator cc{ ref.toObject() };
-        cc.replace_all( src, dst );
-        ref = cc.obj;
-    }
+    static Constant_CombinatorRef find( QList<QJsonValueRef> where, Item what );
+
+    void clear_behavior();
+    void replace_all( Item src, Item dst );
+    void save_recipe( Recipe recipe );
+    bool contains( Item item ) const;
+    void set_behavior( int index, Item item, int count );
+
 private:
     QJsonValueRef ref;
 };

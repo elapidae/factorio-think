@@ -11,5 +11,7 @@ public:
     static BluePrint_Book S_solid_intermediate_stops();
 
     static BluePrint_Book RS_fluid_intermediate_stops();
+
+    static BluePrint_Book book();
 };
 //=======================================================================================

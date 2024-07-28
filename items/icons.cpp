@@ -26,6 +26,11 @@ void Icons::set( int idx, Item item )
     map.insert_or_assign( idx, o );
 }
 //=======================================================================================
+void Icons::clear()
+{
+    map.clear();
+}
+//=======================================================================================
 template <class> class TD;
 void Icons::replace_all( Item _src, Item dst )
 {

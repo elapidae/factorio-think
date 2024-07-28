@@ -8,6 +8,9 @@ class Item
 public:
     struct Named;
 
+    Item( const char * name ) { *this = get(name); }
+    Item( QString name ) { *this = get(name); }
+
     static Item get( QString name );
     static QStringList keys();
 
@@ -54,9 +57,9 @@ struct Item::Named
 {
     //----
     static Item virtual_signal( QString name ) { return Item::virtual_signal(name); }
-    static Item vsignal_check() { return virtual_signal("signal-check"); }
-    static Item vsignal_info()  { return virtual_signal("signal-info");  }
-    static Item vsignal_dot()   { return virtual_signal("signal-dot");   }
+    static Item vsignal_check() { return virtual_signal("check"); }
+    static Item vsignal_info()  { return virtual_signal("info");  }
+    static Item vsignal_dot()   { return virtual_signal("dot");   }
     //----
     static Item train_stop()    { return get("train-stop");     }
     static Item locomotive()    { return get("locomotive");     }
@@ -78,6 +81,13 @@ struct Item::Named
     static Item battery()             { return get("battery");              }
     static Item sulfur()              { return get("sulfur");               }
     static Item explosives()          { return get("explosives");           }
+
+    static Item engine_unit()           { return get("engine-unit");            }
+    static Item electric_engine_unit()  { return get("electric-engine-unit");   }
+    static Item flying_robot_frame()    { return get("flying-robot-frame");     }
+
+    static Item stone_brick()   { return get("stone-brick"); }
+    static Item concrete()      { return get("concrete");    }
 
     static Item water()           { return fluid("water");            }
     static Item crude_oil()       { return fluid("crude-oil");        }

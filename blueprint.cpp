@@ -9,7 +9,7 @@
 #include "qdeb.h"
 #include "names.h"
 #include "bprint_landfill.h"
-
+#include "entity.h"
 
 //=======================================================================================
 auto test_pos = R"(
@@ -23,6 +23,9 @@ void BluePrint::test_positions()
 //=======================================================================================
 
 
+//=======================================================================================
+BluePrint::BluePrint()
+{}
 //=======================================================================================
 BluePrint BluePrint::do_import( QByteArray raw0 )
 {
@@ -108,6 +111,12 @@ QJsonObject BluePrint::build() const
     return res;
 }
 //=======================================================================================
+void BluePrint::merge( BluePrint bp )
+{
+    (void)bp;
+    throw verror;
+}
+//=======================================================================================
 QList<QJsonValueRef> BluePrint::find( Item item )
 {
     QList<QJsonValueRef> res;
@@ -126,6 +135,22 @@ QList<QJsonValueRef> BluePrint::find_assembling_machines()
     return find( Item::Named::assembling_machine_1() ) +
            find( Item::Named::assembling_machine_2() ) +
            find( Item::Named::assembling_machine_3() );
+}
+//=======================================================================================
+QList<QJsonValueRef> BluePrint::find_inserters()
+{
+    return find( Inserter::it_burner_inserter() ) +
+           find( Inserter::it_fast_inserter() ) +
+           find( Inserter::it_filter_inserter() ) +
+           find( Inserter::it_inserter() ) +
+           find( Inserter::it_long_handed_inserter() ) +
+           find( Inserter::it_stack_filter_inserter() ) +
+            find( Inserter::it_stack_inserter() );
+}
+//=======================================================================================
+QList<QJsonValueRef> BluePrint::find_decider_combinators()
+{
+    return find( Item::get(names::decider_combinator) );
 }
 //=======================================================================================
 QJsonValueRef BluePrint::find_unique( Item item )
@@ -164,15 +189,15 @@ void BluePrint::constant_combinators_replace( Item src, Item dst )
     auto list = find( Item::get(names::constant_combinator) );
     for ( auto ref: list )
     {
-        Constant_Combinator2( ref )
-                .replace( src, dst );
+        Constant_CombinatorRef( ref )
+                .replace_all( src, dst );
     }
 }
 //=======================================================================================
 void BluePrint::decider_combinators_replace_first_signal_count
                     ( const Item& src, const Item& dst, int count )
 {
-    auto list = find( Item::get(names::decider_combinator) );
+    auto list = find_decider_combinators();
     for ( auto ref: list )
     {
         Decider_Combinator2 dc( ref );
@@ -223,6 +248,14 @@ void BluePrint::remove_field( Item item, QString field )
         auto obj = ref.toObject();
         obj.remove( field );
         ref = obj;
+    }
+}
+//=======================================================================================
+void BluePrint::shift( int x, int y )
+{
+    for ( auto ref: entities )
+    {
+        Entity(ref).shift( x, y );
     }
 }
 //=======================================================================================

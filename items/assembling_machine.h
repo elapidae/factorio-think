@@ -12,6 +12,7 @@ public:
     Item recipe() const;
 
     static void set_recipe( QJsonValueRef ref, Item item );
+    static void clear_recipe( QJsonValueRef ref );
 };
 //=======================================================================================
 

@@ -28,6 +28,7 @@ public:
     void assign( const BluePrint& bp, unsigned idx );
     void assign( const BluePrint_Book& bp, unsigned idx );
 
+    void inc_pos();
     void shift_to( unsigned idx ); // increase cur index to idx pos in line, from 0 to 5.
     void next_line(); // increase cur index to mod 6 == 0
 
